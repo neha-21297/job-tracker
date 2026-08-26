@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Strata — Automated Graduate Scheme Tracker (£0 Edition)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F3F4F6;
+    --panel: #FFFFFF;
+    --ink: #111827;
+    --ink-soft: #4B5563;
+    --line: #E5E7EB;
+    --petrol: #0F766E;
+    --petrol-dark: #115E59;
+    --moss: #059669;
+    --moss-bg: #ECFDF5;
+    --amber: #D97706;
+    --amber-bg: #FFFBEB;
+    --rose: #E11D48;
+    --rose-bg: #FFF1F2;
+    --blue: #2563EB;
+    --blue-bg: #EFF6FF;
+    --purple: #7C3AED;
+    --purple-bg: #F5F3FF;
+    --slate: #64748B;
+    --slate-bg: #F1F5F9;
+    --radius: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', -apple-system, sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  header {
+    background: var(--panel);
+    border-bottom: 1px solid var(--line);
+    padding: 14px 24px;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .header-top {
+    max-width: 1450px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .brand h1 {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--petrol-dark);
+  }
+  .brand p { font-size: 11.5px; color: var(--ink-soft); }
+
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  input[type=text], input[type=date], select {
+    font-family: inherit;
+    font-size: 12.5px;
+    padding: 6px 10px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: #FAFAFA;
+    outline: none;
+  }
+  input[type=text]:focus, select:focus { border-color: var(--petrol); background: #fff; }
+
+  button {
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 12px;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    background: #fff;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.15s ease;
+  }
+  button:hover { background: #F9FAFB; border-color: #CBD5E1; }
+  button.primary { background: var(--petrol); color: #fff; border-color: var(--petrol); }
+  button.primary:hover { background: var(--petrol-dark); }
+  button.sync { background: var(--blue-bg); color: var(--blue); border-color: #BFDBFE; font-weight: 600; }
+
+  main {
+    max-width: 1450px;
+    margin: 0 auto;
+    padding: 16px 24px 80px;
+  }
+
+  .view-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .view-switcher {
+    display: flex;
+    background: #E2E8F0;
+    padding: 3px;
+    border-radius: 8px;
+    gap: 3px;
+  }
+  .view-btn {
+    border: none;
+    background: transparent;
+    padding: 5px 12px;
+    font-size: 12px;
+    border-radius: 6px;
+    color: var(--ink-soft);
+    font-weight: 600;
+  }
+  .view-btn.active {
+    background: #fff;
+    color: var(--petrol-dark);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  }
+
+  .filters-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .tab-group {
+    display: flex;
+    background: #E2E8F0;
+    padding: 3px;
+    border-radius: 8px;
+    gap: 2px;
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    border: none;
+    background: transparent;
+    padding: 5px 9px;
+    font-size: 11.5px;
+    border-radius: 6px;
+    color: var(--ink-soft);
+  }
+  .tab-btn.active {
+    background: #fff;
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .table-card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+  }
+  thead th {
+    padding: 9px 12px;
+    background: #F8FAFC;
+    border-bottom: 1px solid var(--line);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+  }
+  tbody td {
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: middle;
+  }
+  tbody tr:hover { background: #FAFAFA; cursor: pointer; }
+
+  /* Pipeline View */
+  .pipeline-board {
+    display: none;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 12px;
+    align-items: flex-start;
+    overflow-x: auto;
+    padding-bottom: 20px;
+  }
+  .pipeline-board.active { display: grid; }
+  .pipeline-col {
+    background: #EAECEF;
+    border-radius: 8px;
+    padding: 10px;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .pipeline-header {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ink);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #CBD5E1;
+  }
+  .pipeline-count {
+    background: #CBD5E1;
+    color: #334155;
+    padding: 1px 6px;
+    border-radius: 999px;
+    font-size: 10.5px;
+  }
+  .job-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 10px;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .job-card:hover { border-color: var(--petrol); }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 7px;
+    border-radius: 9999px;
+    font-size: 10.5px;
+    font-weight: 600;
+  }
+  .badge-open { background: var(--moss-bg); color: var(--moss); }
+  .badge-just-opened { background: var(--blue-bg); color: var(--blue); border: 1px solid #BFDBFE; }
+  .badge-opening-soon { background: var(--amber-bg); color: var(--amber); }
+  .badge-closed { background: var(--rose-bg); color: var(--rose); }
+  .badge-rolling { background: var(--slate-bg); color: var(--slate); }
+
+  .tag-type {
+    font-size: 9.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 1px 4px;
+    border-radius: 3px;
+    margin-left: 4px;
+  }
+  .type-live { background: #E0E7FF; color: #3730A3; }
+  .type-predicted { background: #FEF3C7; color: #92400E; }
+  .type-exact { background: #D1FAE5; color: #065F46; }
+  .type-rolling { background: #E2E8F0; color: #475569; }
+
+  .mono { font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; }
+  .countdown { font-size: 10.5px; color: var(--ink-soft); }
+  .urgent { color: var(--rose); font-weight: 600; }
+  .highlight { color: var(--petrol); font-weight: 600; }
+  .applied-tag { font-size: 10.5px; color: var(--moss); font-weight: 600; }
+
+  /* Modal */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 16px;
+  }
+  .modal-overlay.show { display: flex; }
+  .modal {
+    background: #fff;
+    width: 680px;
+    max-width: 100%;
+    max-height: 90vh;
+    border-radius: 12px;
+    padding: 22px;
+    overflow-y: auto;
+  }
+  .modal h2 { font-size: 17px; margin-bottom: 2px; }
+  .modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .modal-grid3 { display: grid; grid-template-columns: 1.2fr 1fr 0.8fr; gap: 10px; margin-bottom: 10px; }
+  .form-field { display: flex; flex-direction: column; gap: 3px; font-size: 11.5px; color: var(--ink-soft); margin-bottom: 10px; }
+  .form-field input, .form-field select, .form-field textarea {
+    font-size: 12px; padding: 7px 9px; border: 1px solid var(--line); border-radius: 6px;
+  }
+  .modal-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 16px;
+    padding-top: 10px;
+    border-top: 1px solid var(--line);
+  }
+  .process-box {
+    background: #F8FAFC;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 10px;
+    font-size: 11.5px;
+    color: var(--ink);
+    margin-bottom: 10px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div class="brand">
+      <h1>Strata — Automated Tracker (£0 Build Edition)</h1>
+      <p>Continuous ATS & Job Board Monitoring via GitHub Actions &bull; Push to Telegram</p>
+    </div>
+    <div class="controls">
+      <button class="sync" id="syncLiveBtn" title="Fetch jobs.json from GitHub Pages">⚡ Sync GitHub Action Feed</button>
+      <input type="text" id="searchFilter" placeholder="Search company or stream..." style="width: 180px;" />
+      <button class="primary" id="addManualBtn">+ Add Role</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="view-nav">
+    <div class="view-switcher">
+      <button class="view-btn active" data-view="table">📋 Table View</button>
+      <button class="view-btn" data-view="pipeline">📊 Application Pipeline Board</button>
+    </div>
+    <div style="font-size: 12px; color: var(--ink-soft);">
+      <span>Legend: <span class="tag-type type-live">Live Sync</span> Polled by Actions | <span class="tag-type type-exact">Exact</span> Confirmed | <span class="tag-type type-predicted">Predicted</span> Estimated | <span class="tag-type type-rolling">Rolling</span></span>
+    </div>
+  </div>
+
+  <div class="filters-bar" id="filtersBar">
+    <div class="tab-group" id="filterTabs">
+      <button class="tab-btn active" data-filter="all">All (<span id="countAll">0</span>)</button>
+      <button class="tab-btn" data-filter="just_opened">⚡ Just Opened</button>
+      <button class="tab-btn" data-filter="opening_soon">⏳ Opening Soon</button>
+      <button class="tab-btn" data-filter="active_applied">🚀 In Progress (<span id="countActive">0</span>)</button>
+      <button class="tab-btn" data-filter="exact_only">🎯 Exact Only</button>
+      <button class="tab-btn" data-filter="predicted_only">🔮 Predicted Only</button>
+      <button class="tab-btn" data-filter="rolling_only">🔄 Rolling</button>
+    </div>
+
+    <div>
+      <label style="font-size: 11.5px; color: var(--ink-soft); margin-right: 4px;">Sort:</label>
+      <select id="sortSelect">
+        <option value="opening_asc">Opening Date (Soonest first)</option>
+        <option value="closing_asc">Deadline (Closing first)</option>
+        <option value="applied_desc">Applied Date (Most Recent)</option>
+        <option value="excitement_desc">Excitement (High to Low)</option>
+        <option value="company_asc">Company Name (A–Z)</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Table View -->
+  <div class="table-card" id="tableView">
+    <table id="trackerTable">
+      <thead>
+        <tr>
+          <th>Timing Status</th>
+          <th>Company & Programme</th>
+          <th>Location</th>
+          <th>Opening Timeline</th>
+          <th>Est. Deadline</th>
+          <th>Excitement</th>
+          <th>Stage & Applied Date</th>
+          <th>Link</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+
+  <!-- Pipeline View -->
+  <div class="pipeline-board" id="pipelineView">
+    <div class="pipeline-col" data-stage="saved">
+      <div class="pipeline-header"><span>Watchlist / Saved</span><span class="pipeline-count" id="count-saved">0</span></div>
+      <div class="col-items" id="col-saved"></div>
+    </div>
+    <div class="pipeline-col" data-stage="applied">
+      <div class="pipeline-header"><span>Applied</span><span class="pipeline-count" id="count-applied">0</span></div>
+      <div class="col-items" id="col-applied"></div>
+    </div>
+    <div class="pipeline-col" data-stage="oa">
+      <div class="pipeline-header"><span>OA / Tests</span><span class="pipeline-count" id="count-oa">0</span></div>
+      <div class="col-items" id="col-oa"></div>
+    </div>
+    <div class="pipeline-col" data-stage="hirevue">
+      <div class="pipeline-header"><span>HireVue / Video</span><span class="pipeline-count" id="count-hirevue">0</span></div>
+      <div class="col-items" id="col-hirevue"></div>
+    </div>
+    <div class="pipeline-col" data-stage="interview">
+      <div class="pipeline-header"><span>Tech Interview</span><span class="pipeline-count" id="count-interview">0</span></div>
+      <div class="col-items" id="col-interview"></div>
+    </div>
+    <div class="pipeline-col" data-stage="assessment_centre">
+      <div class="pipeline-header"><span>Assessment Centre</span><span class="pipeline-count" id="count-ac">0</span></div>
+      <div class="col-items" id="col-assessment_centre"></div>
+    </div>
+    <div class="pipeline-col" data-stage="offer">
+      <div class="pipeline-header"><span>Offer 🎉</span><span class="pipeline-count" id="count-offer">0</span></div>
+      <div class="col-items" id="col-offer"></div>
+    </div>
+    <div class="pipeline-col" data-stage="rejected">
+      <div class="pipeline-header"><span>Rejected / Closed</span><span class="pipeline-count" id="count-rejected">0</span></div>
+      <div class="col-items" id="col-rejected"></div>
+    </div>
+  </div>
+</main>
+
+<!-- Details / Edit Modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <h2 id="mHeading">Programme Details</h2>
+    <div style="font-size: 11.5px; color: var(--ink-soft); margin-bottom: 12px;" id="mSub"></div>
+
+    <div class="process-box" id="processInfoWrap">
+      <strong>Typical Assessment Flow:</strong>
+      <div id="mProcessInfo" style="margin-top: 4px; color: #334155;"></div>
+    </div>
+
+    <div class="modal-grid">
+      <div class="form-field">Company <input type="text" id="mCompany" /></div>
+      <div class="form-field">Programme Stream <input type="text" id="mProgramme" /></div>
+    </div>
+    <div class="modal-grid">
+      <div class="form-field">Location <input type="text" id="mLocation" /></div>
+      <div class="form-field">Salary / Package <input type="text" id="mSalary" /></div>
+    </div>
+    <div class="modal-grid3">
+      <div class="form-field">Opening Date <input type="text" id="mOpening" placeholder="YYYY-MM-DD or Month" /></div>
+      <div class="form-field">
+        Date Confidence
+        <select id="mDateType">
+          <option value="exact">Exact (Confirmed Date)</option>
+          <option value="predicted">Predicted (Estimated Cycle)</option>
+          <option value="rolling">Rolling Intake</option>
+          <option value="live">Live Sync (GitHub Actions)</option>
+        </select>
+      </div>
+      <div class="form-field">Closing Date <input type="text" id="mClosing" placeholder="YYYY-MM-DD or Month" /></div>
+    </div>
+    
+    <div class="modal-grid3">
+      <div class="form-field">
+        My Application Stage
+        <select id="mStage">
+          <option value="saved">Watchlist / Saved</option>
+          <option value="applied">Applied</option>
+          <option value="oa">Online Assessment (OA / SJT)</option>
+          <option value="hirevue">HireVue / Video Interview</option>
+          <option value="interview">1st Round / Technical Interview</option>
+          <option value="assessment_centre">Assessment Centre / Final</option>
+          <option value="offer">Offer 🎉</option>
+          <option value="rejected">Rejected / Closed</option>
+        </select>
+      </div>
+      <div class="form-field">Date Applied <input type="date" id="mAppliedDate" /></div>
+      <div class="form-field">Excitement (1-10) <input type="number" min="1" max="10" id="mExcitement" /></div>
+    </div>
+
+    <div class="form-field">Application URL <input type="text" id="mUrl" /></div>
+    <div class="form-field">Requirements & Disciplines <textarea id="mReqs" rows="2"></textarea></div>
+    <div class="form-field">Personal Notes & Preparation <textarea id="mNotes" rows="3"></textarea></div>
+
+    <div class="modal-footer">
+      <button id="mDeleteBtn" style="color: var(--rose);">Delete</button>
+      <div>
+        <button id="mCancelBtn">Cancel</button>
+        <button class="primary" id="mSaveBtn">Save Changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'strata_tracker_v8_actions_ready';
+
+let jobs = [];
+let activeFilter = 'all';
+let activeSort = 'opening_asc';
+let activeView = 'table';
+let currentEditId = null;
+
+function getTodayString() {
+  return new Date().toISOString().split('T')[0];
+}
+
+async function init() {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) {
+    try { jobs = JSON.parse(saved); } catch(e) { jobs = []; }
+  }
+  
+  // Try loading live jobs.json if hosted on GitHub Pages
+  try {
+    const res = await fetch('jobs.json');
+    if (res.ok) {
+      const data = await res.json();
+      if (data && data.jobs && data.jobs.length > 0) {
+        mergeLiveJobs(data.jobs);
+      }
+    }
+  } catch(e) {
+    // Offline or running locally
+  }
+
+  render();
+}
+
+function mergeLiveJobs(liveJobs) {
+  liveJobs.forEach(lj => {
+    const existing = jobs.find(j => (j.company.toLowerCase() === lj.company.toLowerCase()) && (j.programme === lj.title));
+    if (existing) {
+      existing.url = lj.url || existing.url;
+      existing.dateType = 'live';
+      existing.openingDate = lj.first_seen.split('T')[0];
+    } else {
+      jobs.unshift({
+        id: 'live_' + Math.random().toString(36).substr(2, 6),
+        company: lj.company,
+        programme: lj.title,
+        location: lj.location || 'UK / Hybrid',
+        salary: 'Competitive',
+        openingDate: lj.first_seen.split('T')[0],
+        dateType: 'live',
+        closingDate: '',
+        stage: 'saved',
+        appliedDate: '',
+        excitement: 8,
+        process: 'Auto-detected by GitHub Actions worker.',
+        url: lj.url,
+        requirements: 'Auto-scraped graduate requisition.',
+        notes: `First seen live at: ${lj.first_seen}`,
+        dateAdded: new Date().toISOString()
+      });
+    }
+  });
+  persist();
+}
+
+function persist() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(jobs));
+}
+
+function parseDate(str) {
+  if (!str || str.toLowerCase() === 'rolling') return null;
+  const cleaned = String(str).replace(/(\d+)(st|nd|rd|th)/gi, '$1').trim();
+  const d = new Date(cleaned);
+  return isNaN(d.getTime()) ? null : d;
+}
+
+function getDayDiff(targetDateStr) {
+  const target = parseDate(targetDateStr);
+  if (!target) return null;
+  const now = new Date();
+  const nowMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const targetMidnight = new Date(target.getFullYear(), target.getMonth(), target.getDate());
+  return Math.round((targetMidnight - nowMidnight) / (1000 * 60 * 60 * 24));
+}
+
+function computeStatus(job) {
+  if (job.dateType === 'rolling') {
+    return { tag: 'rolling', label: '🔄 Rolling Intake', class: 'badge-rolling' };
+  }
+  const openDiff = getDayDiff(job.openingDate);
+  const closeDiff = getDayDiff(job.closingDate);
+
+  if (closeDiff !== null && closeDiff < 0) {
+    return { tag: 'closed', label: 'Closed', class: 'badge-closed' };
+  }
+  if (openDiff !== null && openDiff > 0) {
+    return { tag: 'opening_soon', label: `Opens in ${openDiff}d`, class: 'badge-opening-soon' };
+  }
+  if (openDiff !== null && openDiff <= 0 && openDiff >= -7) {
+    return { tag: 'just_opened', label: '⚡ Just Opened', class: 'badge-just-opened' };
+  }
+  if (openDiff !== null && openDiff < -7) {
+    return { tag: 'open', label: 'Open Now', class: 'badge-open' };
+  }
+  return { tag: 'rolling', label: 'Active', class: 'badge-rolling' };
+}
+
+function updateJobStage(jobId, newStage) {
+  const targetJob = jobs.find(j => j.id === jobId);
+  if (targetJob) {
+    targetJob.stage = newStage;
+    if (newStage !== 'saved' && !targetJob.appliedDate) {
+      targetJob.appliedDate = getTodayString();
+    }
+    persist();
+    render();
+  }
+}
+
+function render() {
+  updateCounts();
+  if (activeView === 'table') {
+    document.getElementById('tableView').style.display = 'block';
+    document.getElementById('pipelineView').classList.remove('active');
+    document.getElementById('filtersBar').style.display = 'flex';
+    renderTable();
+  } else {
+    document.getElementById('tableView').style.display = 'none';
+    document.getElementById('pipelineView').classList.add('active');
+    document.getElementById('filtersBar').style.display = 'none';
+    renderPipeline();
+  }
+}
+
+function updateCounts() {
+  document.getElementById('countAll').textContent = jobs.length;
+  const inProgress = jobs.filter(j => j.stage !== 'saved' && j.stage !== 'rejected').length;
+  document.getElementById('countActive').textContent = inProgress;
+
+  const stages = ['saved', 'applied', 'oa', 'hirevue', 'interview', 'assessment_centre', 'offer', 'rejected'];
+  stages.forEach(st => {
+    const el = document.getElementById(`count-${st === 'assessment_centre' ? 'ac' : st}`);
+    if (el) el.textContent = jobs.filter(j => j.stage === st).length;
+  });
+}
+
+function renderTable() {
+  const tbody = document.getElementById('tableBody');
+  const searchVal = document.getElementById('searchFilter').value.toLowerCase().trim();
+  tbody.innerHTML = '';
+
+  let filtered = jobs.filter(job => {
+    const comp = computeStatus(job);
+    const closeDiff = getDayDiff(job.closingDate);
+
+    if (searchVal) {
+      const matchComp = (job.company || '').toLowerCase().includes(searchVal);
+      const matchProg = (job.programme || '').toLowerCase().includes(searchVal);
+      if (!matchComp && !matchProg) return false;
+    }
+
+    if (activeFilter === 'just_opened') return comp.tag === 'just_opened';
+    if (activeFilter === 'opening_soon') return comp.tag === 'opening_soon';
+    if (activeFilter === 'active_applied') return job.stage !== 'saved' && job.stage !== 'rejected';
+    if (activeFilter === 'exact_only') return job.dateType === 'exact';
+    if (activeFilter === 'predicted_only') return job.dateType === 'predicted';
+    if (activeFilter === 'rolling_only') return job.dateType === 'rolling';
+    return true;
+  });
+
+  filtered.sort((a, b) => {
+    if (activeSort === 'opening_asc') {
+      const da = getDayDiff(a.openingDate);
+      const db = getDayDiff(b.openingDate);
+      if (da === null && db === null) return 0;
+      if (da === null) return 1;
+      if (db === null) return -1;
+      return da - db;
+    }
+    if (activeSort === 'closing_asc') {
+      const da = getDayDiff(a.closingDate);
+      const db = getDayDiff(b.closingDate);
+      if (da === null && db === null) return 0;
+      if (da === null) return 1;
+      if (db === null) return -1;
+      return da - db;
+    }
+    if (activeSort === 'applied_desc') {
+      return (b.appliedDate || '').localeCompare(a.appliedDate || '');
+    }
+    if (activeSort === 'excitement_desc') {
+      return (b.excitement || 5) - (a.excitement || 5);
+    }
+    if (activeSort === 'company_asc') {
+      return (a.company || '').localeCompare(b.company || '');
+    }
+    return 0;
+  });
+
+  filtered.forEach(job => {
+    const comp = computeStatus(job);
+    const openDiff = getDayDiff(job.openingDate);
+    const closeDiff = getDayDiff(job.closingDate);
+
+    let typeTag = `<span class="tag-type type-${job.dateType}">${job.dateType}</span>`;
+    let openingDisplay = (job.openingDate || '—') + ' ' + typeTag;
+    
+    if (job.dateType !== 'rolling' && openDiff !== null) {
+      if (openDiff > 0) openingDisplay += ` <div class="countdown highlight">in ${openDiff}d</div>`;
+      else if (openDiff >= -7) openingDisplay += ` <div class="countdown highlight">${Math.abs(openDiff)}d ago</div>`;
+    }
+
+    let closingDisplay = job.closingDate || '—';
+    if (closeDiff !== null) {
+      const isUrgent = closeDiff <= 7 && closeDiff >= 0;
+      closingDisplay += ` <div class="countdown ${isUrgent ? 'urgent' : ''}">${closeDiff < 0 ? 'Closed' : `${closeDiff}d left`}</div>`;
+    }
+
+    const appliedInfo = job.appliedDate ? `<div class="applied-tag">Applied: ${job.appliedDate}</div>` : '';
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><span class="badge ${comp.class}">${comp.label}</span></td>
+      <td>
+        <strong>${escapeHtml(job.company)}</strong>
+        <div style="font-size:11.5px; color:var(--ink-soft);">${escapeHtml(job.programme || 'Graduate Scheme')}</div>
+      </td>
+      <td>${escapeHtml(job.location || 'UK Wide')}</td>
+      <td class="mono">${openingDisplay}</td>
+      <td class="mono">${closingDisplay}</td>
+      <td><span class="mono">${job.excitement || 5}/10</span></td>
+      <td>
+        <select class="stage-inline" data-id="${job.id}">
+          <option value="saved" ${job.stage === 'saved' ? 'selected' : ''}>Watchlist</option>
+          <option value="applied" ${job.stage === 'applied' ? 'selected' : ''}>Applied</option>
+          <option value="oa" ${job.stage === 'oa' ? 'selected' : ''}>OA / Assessment</option>
+          <option value="hirevue" ${job.stage === 'hirevue' ? 'selected' : ''}>HireVue / Video</option>
+          <option value="interview" ${job.stage === 'interview' ? 'selected' : ''}>Tech Interview</option>
+          <option value="assessment_centre" ${job.stage === 'assessment_centre' ? 'selected' : ''}>Assessment Centre</option>
+          <option value="offer" ${job.stage === 'offer' ? 'selected' : ''}>Offer 🎉</option>
+          <option value="rejected" ${job.stage === 'rejected' ? 'selected' : ''}>Rejected</option>
+        </select>
+        ${appliedInfo}
+      </td>
+      <td>
+        ${job.url ? `<a href="${escapeHtml(job.url)}" target="_blank" onclick="event.stopPropagation()" style="color:var(--petrol); font-weight:600; text-decoration:none;">Apply ↗</a>` : '—'}
+      </td>
+    `;
+
+    tr.addEventListener('click', (e) => {
+      if (e.target.tagName === 'SELECT' || e.target.tagName === 'A') return;
+      openEditModal(job.id);
+    });
+
+    tr.querySelector('.stage-inline').addEventListener('change', (e) => {
+      e.stopPropagation();
+      updateJobStage(job.id, e.target.value);
+    });
+
+    tbody.appendChild(tr);
+  });
+}
+
+function renderPipeline() {
+  const stages = ['saved', 'applied', 'oa', 'hirevue', 'interview', 'assessment_centre', 'offer', 'rejected'];
+  stages.forEach(st => {
+    const col = document.getElementById(`col-${st}`);
+    col.innerHTML = '';
+    const items = jobs.filter(j => (j.stage || 'saved') === st);
+
+    items.forEach(job => {
+      const comp = computeStatus(job);
+      const card = document.createElement('div');
+      card.className = 'job-card';
+      const appliedText = job.appliedDate ? `<div class="applied-tag" style="font-size:10px;">Applied: ${job.appliedDate}</div>` : '';
+
+      card.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+          <span style="font-weight:700; font-size:12.5px;">${escapeHtml(job.company)}</span>
+          <span class="badge ${comp.class}">${comp.label}</span>
+        </div>
+        <div style="font-size:11px; color:var(--ink-soft);">${escapeHtml(job.programme || 'Graduate Stream')}</div>
+        ${appliedText}
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; margin-top:4px; color:var(--ink-soft);">
+          <span>${job.openingDate ? job.openingDate : ''} <span class="tag-type type-${job.dateType}">${job.dateType}</span></span>
+          <span class="mono">${job.excitement || 5}/10</span>
+        </div>
+      `;
+      card.addEventListener('click', () => openEditModal(job.id));
+      col.appendChild(card);
+    });
+  });
+}
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+}
+
+document.querySelectorAll('.view-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeView = btn.dataset.view;
+    render();
+  });
+});
+
+document.querySelectorAll('#filterTabs .tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#filterTabs .tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = btn.dataset.filter;
+    render();
+  });
+});
+
+document.getElementById('sortSelect').addEventListener('change', (e) => {
+  activeSort = e.target.value;
+  render();
+});
+document.getElementById('searchFilter').addEventListener('input', render);
+
+document.getElementById('syncLiveBtn').addEventListener('click', async () => {
+  const btn = document.getElementById('syncLiveBtn');
+  btn.textContent = 'Syncing...';
+  try {
+    const res = await fetch('jobs.json');
+    if (res.ok) {
+      const data = await res.json();
+      if (data && data.jobs) {
+        mergeLiveJobs(data.jobs);
+        alert(`Successfully synced ${data.jobs.length} roles from jobs.json!`);
+      }
+    } else {
+      alert('No jobs.json feed found at this path yet. Run the GitHub Action or add roles locally.');
+    }
+  } catch(e) {
+    alert('Unable to load jobs.json (Offline or local file protocol).');
+  }
+  btn.textContent = '⚡ Sync GitHub Action Feed';
+  render();
+});
+
+function openEditModal(id) {
+  currentEditId = id;
+  const job = id ? jobs.find(j => j.id === id) : {
+    id: null, company: '', programme: '', location: '', salary: '',
+    openingDate: '', dateType: 'predicted', closingDate: '', stage: 'saved',
+    appliedDate: '', excitement: 5, process: '', url: '', requirements: '', notes: ''
+  };
+
+  document.getElementById('mHeading').textContent = id ? `${job.company}` : 'Add New Programme';
+  document.getElementById('mSub').textContent = id ? (job.programme || 'Graduate Scheme') : '';
+  document.getElementById('mProcessInfo').textContent = job.process || 'Standard recruitment: Online application -> Assessments -> Video interview -> Assessment Day.';
+  
+  document.getElementById('mCompany').value = job.company;
+  document.getElementById('mProgramme').value = job.programme;
+  document.getElementById('mLocation').value = job.location;
+  document.getElementById('mSalary').value = job.salary;
+  document.getElementById('mOpening').value = job.openingDate;
+  document.getElementById('mDateType').value = job.dateType || 'predicted';
+  document.getElementById('mClosing').value = job.closingDate;
+  document.getElementById('mStage').value = job.stage || 'saved';
+  document.getElementById('mAppliedDate').value = job.appliedDate || '';
+  document.getElementById('mExcitement').value = job.excitement || 5;
+  document.getElementById('mUrl').value = job.url;
+  document.getElementById('mReqs').value = job.requirements || '';
+  document.getElementById('mNotes').value = job.notes || '';
+
+  document.getElementById('mDeleteBtn').style.display = id ? 'inline-block' : 'none';
+  document.getElementById('modalOverlay').classList.add('show');
+}
+
+document.getElementById('mStage').addEventListener('change', (e) => {
+  const appliedDateInput = document.getElementById('mAppliedDate');
+  if (e.target.value !== 'saved' && !appliedDateInput.value) {
+    appliedDateInput.value = getTodayString();
+  }
+});
+
+function closeEditModal() {
+  document.getElementById('modalOverlay').classList.remove('show');
+  currentEditId = null;
+}
+
+document.getElementById('addManualBtn').addEventListener('click', () => openEditModal(null));
+document.getElementById('mCancelBtn').addEventListener('click', closeEditModal);
+
+document.getElementById('mSaveBtn').addEventListener('click', () => {
+  const stageVal = document.getElementById('mStage').value;
+  let appliedVal = document.getElementById('mAppliedDate').value;
+  
+  if (stageVal !== 'saved' && !appliedVal) {
+    appliedVal = getTodayString();
+  }
+
+  const payload = {
+    company: document.getElementById('mCompany').value.trim(),
+    programme: document.getElementById('mProgramme').value.trim(),
+    location: document.getElementById('mLocation').value.trim(),
+    salary: document.getElementById('mSalary').value.trim(),
+    openingDate: document.getElementById('mOpening').value.trim(),
+    dateType: document.getElementById('mDateType').value,
+    closingDate: document.getElementById('mClosing').value.trim(),
+    stage: stageVal,
+    appliedDate: appliedVal,
+    excitement: parseInt(document.getElementById('mExcitement').value, 10) || 5,
+    url: document.getElementById('mUrl').value.trim(),
+    requirements: document.getElementById('mReqs').value.trim(),
+    notes: document.getElementById('mNotes').value.trim()
+  };
+
+  if (currentEditId) {
+    const idx = jobs.findIndex(j => j.id === currentEditId);
+    if (idx !== -1) jobs[idx] = { ...jobs[idx], ...payload };
+  } else {
+    jobs.unshift({
+      id: 'job_' + Date.now(),
+      dateAdded: new Date().toISOString(),
+      ...payload
+    });
+  }
+
+  persist();
+  closeEditModal();
+  render();
+});
+
+document.getElementById('mDeleteBtn').addEventListener('click', () => {
+  if (!currentEditId) return;
+  jobs = jobs.filter(j => j.id !== currentEditId);
+  persist();
+  closeEditModal();
+  render();
+});
+
+init();
+</script>
+</body>
+</html>

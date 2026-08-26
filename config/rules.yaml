@@ -1,0 +1,12 @@
+include_title:
+  - '(?i)\b(grad|graduate|junior|entry[\s-]level|trainee|early[\s-]career|intern|internship)\b'
+  - '(?i)\b(geophysic|geoscien|geolog|geotechnic|hydrogeolog|oceanograph|hydrograph)\b'
+  - '(?i)\b(seismic|subsurface|petrophysic|earth[\s-]observation|gis|spatial|remote[\s-]sensing)\b'
+  - '(?i)\b(catastrophe|natcat|climate[\s-]risk|risk[\s-]analyst|data[\s-]analyst)\b'
+
+exclude_title:
+  - '(?i)\b(senior|lead|principal|director|head[\s-]of|manager|staff|vp|chief)\b'
+  - '(?i)\b(apprenticeship|apprentice|school[\s-]leaver|executive[\s-]assistant)\b'
+
+locations:
+  - '(?i)\b(uk|united[\s-]kingdom|london|scotland|aberdeen|edinburgh|bristol|oxford|cambridge|remote|hybrid)\b'

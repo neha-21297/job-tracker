@@ -1,0 +1,45 @@
+# .github/workflows/digest.yml
+name: digest
+on:
+  schedule:
+    - cron: "0 8 * * 1-5"              # 08:00 UTC Monday-Friday
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PAT }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - name: Send Daily Digest
+        env:
+          SMTP_HOST: "smtp.gmail.com"
+          SMTP_PORT: "587"
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          NOTIFY_EMAIL: ${{ secrets.NOTIFY_EMAIL }}
+        run: |
+          python -c "
+          import json, os, pathlib
+          from tracker.notify import send_email
+          
+          state_path = pathlib.Path('data/state.json')
+          if state_path.exists():
+              state = json.loads(state_path.read_text())
+              total_roles = sum(len([j for j in jobs.values() if not j.get('closed')]) for jobs in state.values())
+              subject = f'📊 Strata Daily Digest: {total_roles} Active Opportunities Tracked'
+              body = f'<p>Your automated tracker is currently monitoring <strong>{len(state)}</strong> company feeds with <strong>{total_roles}</strong> active roles detected.</p>'
+              send_email(subject, body)
+          "

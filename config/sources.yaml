@@ -1,0 +1,860 @@
+# config/sources.yaml
+# Tier 1 (Greenhouse, Lever, SmartRecruiters, Ashby)
+sylvera:
+  name: "Sylvera"
+  tier: 1
+  adapter: "greenhouse"
+  token: "sylvera"
+  url: "https://boards-api.greenhouse.io/v1/boards/sylvera/jobs"
+
+iceye:
+  name: "ICEYE"
+  tier: 1
+  adapter: "greenhouse"
+  token: "iceye"
+  url: "https://boards-api.greenhouse.io/v1/boards/iceye/jobs"
+
+spire_global:
+  name: "Spire Global"
+  tier: 1
+  adapter: "greenhouse"
+  token: "spireglobal"
+  url: "https://boards-api.greenhouse.io/v1/boards/spireglobal/jobs"
+
+planet:
+  name: "Planet"
+  tier: 1
+  adapter: "greenhouse"
+  token: "planetlabs"
+  url: "https://boards-api.greenhouse.io/v1/boards/planetlabs/jobs"
+
+maxar:
+  name: "Maxar"
+  tier: 1
+  adapter: "greenhouse"
+  token: "maxar"
+  url: "https://boards-api.greenhouse.io/v1/boards/maxar/jobs"
+
+beam:
+  name: "Beam"
+  tier: 1
+  adapter: "greenhouse"
+  token: "beam"
+  url: "https://boards-api.greenhouse.io/v1/boards/beam/jobs"
+
+rovco:
+  name: "Rovco"
+  tier: 1
+  adapter: "greenhouse"
+  token: "rovco"
+  url: "https://boards-api.greenhouse.io/v1/boards/rovco/jobs"
+
+aurora_energy_research:
+  name: "Aurora Energy Research"
+  tier: 1
+  adapter: "greenhouse"
+  token: "auroraenergyresearch"
+  url: "https://boards-api.greenhouse.io/v1/boards/auroraenergyresearch/jobs"
+
+storegga:
+  name: "Storegga"
+  tier: 1
+  adapter: "lever"
+  token: "storegga"
+  url: "https://api.lever.co/v0/postings/storegga"
+
+reach_subsea:
+  name: "Reach Subsea"
+  tier: 1
+  adapter: "smartrecruiters"
+  token: "ReachSubsea"
+  url: "https://api.smartrecruiters.com/v1/companies/ReachSubsea/postings"
+
+viridien:
+  name: "Viridien (CGG)"
+  tier: 1
+  adapter: "smartrecruiters"
+  token: "Viridien"
+  url: "https://www.viridiengroup.com/careers"
+
+# Tier 2 (Workday & Major Enterprise APIs)
+bp:
+  name: "BP"
+  tier: 2
+  adapter: "workday"
+  host: "bp.wd3.myworkdayjobs.com"
+  path: "BP_Careers"
+  url: "https://www.bp.com/en/global/corporate/careers/students-and-graduates.html"
+
+shell:
+  name: "Shell"
+  tier: 2
+  adapter: "workday"
+  host: "shell.wd3.myworkdayjobs.com"
+  path: "Shell_Careers"
+  url: "https://www.shell.co.uk/careers/students-and-graduates.html"
+
+aecom:
+  name: "AECOM"
+  tier: 2
+  adapter: "workday"
+  host: "aecom.wd1.myworkdayjobs.com"
+  path: "AECOM_Careers"
+  url: "https://aecom.com/uk-graduate-careers"
+
+arup:
+  name: "Arup"
+  tier: 2
+  adapter: "workday"
+  host: "arup.wd3.myworkdayjobs.com"
+  path: "Arup_Careers"
+  url: "https://www.arup.com/careers/early-careers"
+
+atkinsrealis:
+  name: "AtkinsRéalis"
+  tier: 2
+  adapter: "workday"
+  host: "atkinsrealis.wd3.myworkdayjobs.com"
+  path: "AtkinsRealis"
+  url: "https://careers.atkinsrealis.com"
+
+wsp:
+  name: "WSP"
+  tier: 2
+  adapter: "workday"
+  host: "wsp.wd3.myworkdayjobs.com"
+  path: "WSP_Careers"
+  url: "https://www.wsp.com/en-gb/careers/early-career"
+
+mott_macdonald:
+  name: "Mott MacDonald"
+  tier: 2
+  adapter: "workday"
+  host: "mottmac.wd3.myworkdayjobs.com"
+  path: "MottMac_Careers"
+  url: "https://www.mottmac.com/careers/early-careers"
+
+jacobs:
+  name: "Jacobs"
+  tier: 2
+  adapter: "workday"
+  host: "jacobs.wd1.myworkdayjobs.com"
+  path: "Jacobs_Careers"
+  url: "https://www.jacobs.com/careers"
+
+moodys:
+  name: "Moody's"
+  tier: 2
+  adapter: "workday"
+  host: "moodys.wd5.myworkdayjobs.com"
+  path: "Moodys_Careers"
+  url: "https://careers.moodys.com"
+
+totalenergies:
+  name: "TotalEnergies"
+  tier: 2
+  adapter: "workday"
+  host: "totalenergies.wd3.myworkdayjobs.com"
+  path: "TotalEnergies_Careers"
+  url: "https://totalenergies.com/careers"
+
+# Tier 3 (Careers Portals)
+a2sea:
+  name: "A-2-Sea Solutions"
+  tier: 3
+  url: "https://a2sea.co.uk/careers"
+
+afry:
+  name: "AFRY"
+  tier: 3
+  url: "https://afry.com/en/join-us"
+
+airbus:
+  name: "Airbus"
+  tier: 3
+  url: "https://www.airbus.com/en/careers"
+
+aker_bp:
+  name: "Aker BP"
+  tier: 3
+  url: "https://akerbp.com/en/careers"
+
+allen_york:
+  name: "Allen & York"
+  tier: 3
+  url: "https://www.allen-york.com"
+
+amey:
+  name: "Amey"
+  tier: 3
+  url: "https://www.amey.co.uk/early-careers"
+
+antea_group:
+  name: "Antea Group"
+  tier: 3
+  url: "https://anteagroup.com/careers"
+
+aon:
+  name: "Aon"
+  tier: 3
+  url: "https://www.aon.com/careers/early-careers"
+
+aplitrak:
+  name: "Aplitrak"
+  tier: 3
+  url: "https://aplitrak.com"
+
+arcadis:
+  name: "Arcadis"
+  tier: 3
+  url: "https://www.arcadis.com/careers"
+
+assystems:
+  name: "Assystems"
+  tier: 3
+  url: "https://www.assystem.com/en/careers"
+
+aston_martin:
+  name: "Aston Martin"
+  tier: 3
+  url: "https://www.astonmartin.com/en/careers"
+
+atelier_ten:
+  name: "Atelier Ten"
+  tier: 3
+  url: "https://www.atelierten.com/careers"
+
+australiansuper:
+  name: "AustralianSuper"
+  tier: 3
+  url: "https://www.australiansuper.com/careers"
+
+awe:
+  name: "AWE"
+  tier: 3
+  url: "https://www.awe.co.uk/careers"
+
+baker_hughes:
+  name: "Baker Hughes"
+  tier: 3
+  url: "https://careers.bakerhughes.com"
+
+balfour_beatty:
+  name: "Balfour Beatty"
+  tier: 3
+  url: "https://www.balfourbeatty.com/careers"
+
+binnies:
+  name: "Binnies"
+  tier: 3
+  url: "https://binnies.com/careers"
+
+bmt:
+  name: "BMT"
+  tier: 3
+  url: "https://www.bmt.org/careers"
+
+boskalis:
+  name: "Boskalis"
+  tier: 3
+  url: "https://careers.boskalis.com"
+
+bgs:
+  name: "British Geological Survey (BGS)"
+  tier: 3
+  url: "https://www.bgs.ac.uk/about-bgs/work-with-us"
+
+buro_happold:
+  name: "Buro Happold"
+  tier: 3
+  url: "https://www.burohappold.com/careers"
+
+bwb:
+  name: "BWB"
+  tier: 3
+  url: "https://www.bwbconsulting.com/careers"
+
+carbon_brief:
+  name: "Carbon Brief"
+  tier: 3
+  url: "https://www.carbonbrief.org/jobs"
+
+centrica:
+  name: "Centrica"
+  tier: 3
+  url: "https://www.centrica.com/careers/early-careers"
+
+cgfi:
+  name: "CGFI"
+  tier: 3
+  url: "https://www.cgfi.ac.uk"
+
+cgi:
+  name: "CGI"
+  tier: 3
+  url: "https://www.cgi.com/uk/en-gb/careers"
+
+cgl:
+  name: "CGL"
+  tier: 3
+  url: "https://cgl-uk.com/careers"
+
+chevron:
+  name: "Chevron"
+  tier: 3
+  url: "https://careers.chevron.com"
+
+conocophillips:
+  name: "ConocoPhillips"
+  tier: 3
+  url: "https://careers.conocophillips.com"
+
+cowi:
+  name: "COWI"
+  tier: 3
+  url: "https://www.cowi.com/careers"
+
+delta:
+  name: "Delta"
+  tier: 3
+  url: "https://www.delta-simons.com/careers"
+
+dalcour_maclaren:
+  name: "Dalcour Maclaren"
+  tier: 3
+  url: "https://dalcourmaclaren.com/careers"
+
+dnv:
+  name: "DNV"
+  tier: 3
+  url: "https://www.dnv.com/careers"
+
+dof:
+  name: "DOF"
+  tier: 3
+  url: "https://www.dof.com/careers"
+
+edf:
+  name: "EDF"
+  tier: 3
+  url: "https://www.edfenergy.com/careers/early-careers"
+
+eet_fuels:
+  name: "EET fuels"
+  tier: 3
+  url: "https://www.eetfuels.com/careers"
+
+eni:
+  name: "Eni"
+  tier: 3
+  url: "https://www.eni.com/en-IT/careers.html"
+
+environment_agency:
+  name: "Environment Agency"
+  tier: 3
+  url: "https://environmentagencycareers.co.uk"
+
+equinor:
+  name: "Equinor"
+  tier: 3
+  url: "https://www.equinor.com/careers/graduates"
+
+erm:
+  name: "ERM"
+  tier: 3
+  url: "https://www.erm.com/careers"
+
+esri_uk:
+  name: "Esri UK"
+  tier: 3
+  url: "https://www.esriuk.com/en-gb/careers"
+
+european_geophysical_services:
+  name: "European Geophysical Services"
+  tier: 3
+  url: "https://www.europeangeophysical.com"
+
+ey:
+  name: "EY"
+  tier: 3
+  url: "https://www.ey.com/en_uk/careers/students"
+
+exxonmobil:
+  name: "ExxonMobil"
+  tier: 3
+  url: "https://jobs.exxonmobil.com"
+
+fortescue_zero:
+  name: "Fortescue Zero"
+  tier: 3
+  url: "https://fortescue.com/careers"
+
+fugro:
+  name: "Fugro"
+  tier: 3
+  url: "https://www.fugro.com/careers/early-careers"
+
+gallagher:
+  name: "Gallagher"
+  tier: 3
+  url: "https://www.ajg.com/uk/careers"
+
+gardline:
+  name: "Gardline"
+  tier: 3
+  url: "https://gardline.com/careers"
+
+geointel:
+  name: "GeoIntel"
+  tier: 3
+  url: "https://geointel.co.uk"
+
+geoquip_marine:
+  name: "Geoquip Marine"
+  tier: 3
+  url: "https://www.geoquip-marine.com/careers"
+
+geoxyz:
+  name: "GeoXYZ"
+  tier: 3
+  url: "https://geoxyz.eu/careers"
+
+ghd:
+  name: "GHD"
+  tier: 3
+  url: "https://www.ghd.com/en/careers"
+
+gmv:
+  name: "GMV"
+  tier: 3
+  url: "https://www.gmv.com/en-es/employment"
+
+gravtech:
+  name: "Gravtech"
+  tier: 3
+  url: "https://gravtech.co.uk"
+
+guy_carpenter:
+  name: "Guy Carpenter"
+  tier: 3
+  url: "https://careers.marshmclennan.com"
+
+halliburton:
+  name: "Halliburton"
+  tier: 3
+  url: "https://jobs.halliburton.com"
+
+harbour_energy:
+  name: "Harbour Energy"
+  tier: 3
+  url: "https://www.harbourenergy.com/careers"
+
+hartee:
+  name: "Hartee"
+  tier: 3
+  url: "https://hartee.co.uk"
+
+hollis:
+  name: "Hollis"
+  tier: 3
+  url: "https://www.hollispb.com/careers"
+
+howden:
+  name: "Howden"
+  tier: 3
+  url: "https://www.howdengroupholdings.com/careers"
+
+hr_wallingford:
+  name: "HR Wallingford"
+  tier: 3
+  url: "https://www.hrwallingford.com/careers"
+
+icf:
+  name: "ICF"
+  tier: 3
+  url: "https://www.icf.com/careers"
+
+inge:
+  name: "Inge"
+  tier: 3
+  url: "https://inge.co.uk"
+
+intersect_surveys:
+  name: "Intersect Surveys"
+  tier: 3
+  url: "https://intersectsurveys.com"
+
+jba_consulting:
+  name: "JBA Consulting"
+  tier: 3
+  url: "https://www.jbaconsulting.com/careers"
+
+jcb:
+  name: "JCB"
+  tier: 3
+  url: "https://www.jcb.com/en-gb/about/careers"
+
+kbr:
+  name: "KBR"
+  tier: 3
+  url: "https://kbr.com/careers"
+
+kent:
+  name: "Kent"
+  tier: 3
+  url: "https://kentplc.com/careers"
+
+lcp:
+  name: "LCP"
+  tier: 3
+  url: "https://www.lcp.uk.com/early-careers"
+
+lloyds:
+  name: "Lloyd's"
+  tier: 3
+  url: "https://www.lloyds.com/about-lloyds/careers"
+
+mace:
+  name: "Mace"
+  tier: 3
+  url: "https://www.macegroup.com/careers/graduates"
+
+magnitude_surveys:
+  name: "Magnitude Surveys"
+  tier: 3
+  url: "https://magnitudesurveys.co.uk/careers"
+
+met_office:
+  name: "Met Office"
+  tier: 3
+  url: "https://www.metoffice.gov.uk/about-us/careers"
+
+midsummer:
+  name: "Midsummer"
+  tier: 3
+  url: "https://midsummerwholesale.co.uk/jobs"
+
+ms_amlin:
+  name: "MS Amlin"
+  tier: 3
+  url: "https://www.msamlin.com/en/careers.html"
+
+munich_re:
+  name: "Munich Re"
+  tier: 3
+  url: "https://www.munichre.com/en/careers"
+
+national_gas:
+  name: "National Gas"
+  tier: 3
+  url: "https://www.nationalgas.com/careers"
+
+national_grid:
+  name: "National Grid"
+  tier: 3
+  url: "https://www.nationalgrid.com/careers/graduates"
+
+natural_resources_wales:
+  name: "Natural Resources Wales"
+  tier: 3
+  url: "https://naturalresources.wales/about-us/careers"
+
+neptune_energy:
+  name: "Neptune Energy"
+  tier: 3
+  url: "https://www.neptuneenergy.com/careers"
+
+nextgeo:
+  name: "NextGeo"
+  tier: 3
+  url: "https://nextgeo.eu/careers"
+
+nkt:
+  name: "NKT"
+  tier: 3
+  url: "https://www.nkt.com/careers"
+
+ocean_infinity:
+  name: "Ocean Infinity"
+  tier: 3
+  url: "https://oceaninfinity.com/careers"
+
+octopus_energy:
+  name: "Octopus Energy"
+  tier: 3
+  url: "https://octopus.energy/careers"
+
+ocu:
+  name: "OCU"
+  tier: 3
+  url: "https://ocugroup.com/careers"
+
+opc:
+  name: "OPC"
+  tier: 3
+  url: "https://opc.co.uk/careers"
+
+ordnance_survey:
+  name: "Ordnance Survey"
+  tier: 3
+  url: "https://www.ordnancesurvey.co.uk/careers"
+
+orsted:
+  name: "Ørsted"
+  tier: 3
+  url: "https://orsted.co.uk/careers"
+
+partrac:
+  name: "Partrac"
+  tier: 3
+  url: "https://partrac.com/careers"
+
+perenco:
+  name: "Perenco"
+  tier: 3
+  url: "https://www.perenco.com/careers"
+
+petrofac:
+  name: "Petrofac"
+  tier: 3
+  url: "https://www.petrofac.com/careers"
+
+pgs:
+  name: "PGS"
+  tier: 3
+  url: "https://www.pgs.com/careers"
+
+prysmian:
+  name: "Prysmian"
+  tier: 3
+  url: "https://www.prysmiangroup.com/en/careers"
+
+ramboll:
+  name: "Ramboll"
+  tier: 3
+  url: "https://uk.ramboll.com/careers"
+
+reid_geophysics:
+  name: "Reid Geophysics"
+  tier: 3
+  url: "https://reid-geophys.co.uk"
+
+ricardo:
+  name: "Ricardo"
+  tier: 3
+  url: "https://www.ricardo.com/careers"
+
+rina:
+  name: "RINA"
+  tier: 3
+  url: "https://www.rina.org/en/careers"
+
+rms:
+  name: "RMS"
+  tier: 3
+  url: "https://careers.moodys.com"
+
+rps:
+  name: "RPS"
+  tier: 3
+  url: "https://www.rpsgroup.com/careers"
+
+rsk:
+  name: "RSK"
+  tier: 3
+  url: "https://rskgroup.com/careers"
+
+rwe:
+  name: "RWE"
+  tier: 3
+  url: "https://www.rwe.com/en/careers"
+
+sp_global:
+  name: "S&P Global Commodity Insights"
+  tier: 3
+  url: "https://www.spglobal.com/en/careers"
+
+saipem:
+  name: "Saipem"
+  tier: 3
+  url: "https://www.saipem.com/en/careers"
+
+sandberg:
+  name: "Sandberg"
+  tier: 3
+  url: "https://www.sandberg.co.uk"
+
+satellite_applications_catapult:
+  name: "Satellite Applications Catapult"
+  tier: 3
+  url: "https://sa.catapult.org.uk/careers"
+
+savills:
+  name: "Savills"
+  tier: 3
+  url: "https://www.savills.co.uk/graduates"
+
+scottishpower:
+  name: "ScottishPower"
+  tier: 3
+  url: "https://www.scottishpower.com/careers"
+
+seaway:
+  name: "Seaway"
+  tier: 3
+  url: "https://www.seaway7.com/careers"
+
+sep_geophysics:
+  name: "SEP Geophysics"
+  tier: 3
+  url: "https://sepgeophysics.com"
+
+sepa:
+  name: "SEPA"
+  tier: 3
+  url: "https://www.sepa.org.uk/jobs"
+
+slb:
+  name: "SLB"
+  tier: 3
+  url: "https://careers.slb.com"
+
+slr:
+  name: "SLR"
+  tier: 3
+  url: "https://www.slrconsulting.com/careers"
+
+spectrum_geophysics:
+  name: "Spectrum Geophysics"
+  tier: 3
+  url: "https://spectrum-geophysics.co.uk"
+
+soil_engineering:
+  name: "Soil Engineering"
+  tier: 3
+  url: "https://www.soil-engineering.co.uk/careers"
+
+sse:
+  name: "SSE"
+  tier: 3
+  url: "https://careers.sse.com/early-careers"
+
+stantec:
+  name: "Stantec"
+  tier: 3
+  url: "https://www.stantec.com/careers"
+
+sulmara:
+  name: "Sulmara"
+  tier: 3
+  url: "https://sulmara.com/careers"
+
+sweco:
+  name: "Sweco"
+  tier: 3
+  url: "https://www.sweco.co.uk/careers"
+
+swiss_re:
+  name: "Swiss Re"
+  tier: 3
+  url: "https://www.swissre.com/careers/graduates.html"
+
+technip_energies:
+  name: "Technip Energies"
+  tier: 3
+  url: "https://www.technipenergies.com/careers"
+
+telespazio:
+  name: "Telespazio"
+  tier: 3
+  url: "https://www.telespazio.co.uk/careers"
+
+tetra_tech:
+  name: "Tetra Tech"
+  tier: 3
+  url: "https://www.tetratecheurope.com/careers"
+
+tgs:
+  name: "TGS"
+  tier: 3
+  url: "https://www.tgs.com/careers"
+
+thg:
+  name: "THG"
+  tier: 3
+  url: "https://www.thg.com/careers"
+
+ukceh:
+  name: "UK Centre for Ecology & Hydrology (UKCEH)"
+  tier: 3
+  url: "https://www.ceh.ac.uk/careers"
+
+ukho:
+  name: "UK Hydrographic Office"
+  tier: 3
+  url: "https://www.gov.uk/government/organisations/uk-hydrographic-office/about/recruitment"
+
+unfccc:
+  name: "UNFCCC"
+  tier: 3
+  url: "https://unfccc.int/about-us/employment"
+
+van_oord:
+  name: "Van Oord"
+  tier: 3
+  url: "https://www.vanoord.com/careers"
+
+vattenfall:
+  name: "Vattenfall"
+  tier: 3
+  url: "https://careers.vattenfall.com"
+
+verisk:
+  name: "Verisk"
+  tier: 3
+  url: "https://www.verisk.com/careers"
+
+wellcome:
+  name: "Wellcome"
+  tier: 3
+  url: "https://wellcome.org/jobs"
+
+wessex_archaeology:
+  name: "Wessex Archaeology"
+  tier: 3
+  url: "https://www.wessexarch.co.uk/vacancies"
+
+wintershall_dea:
+  name: "Wintershall Dea"
+  tier: 3
+  url: "https://wintershalldea.com/en/careers"
+
+wood:
+  name: "Wood"
+  tier: 3
+  url: "https://www.woodplc.com/careers/early-careers"
+
+wood_mackenzie:
+  name: "Wood Mackenzie"
+  tier: 3
+  url: "https://www.woodmac.com/careers"
+
+worley:
+  name: "Worley"
+  tier: 3
+  url: "https://www.worley.com/careers"
+
+wtw:
+  name: "WTW"
+  tier: 3
+  url: "https://careers.wtwco.com"
+
+xodus:
+  name: "Xodus"
+  tier: 3
+  url: "https://www.xodusgroup.com/careers"
+
+zurich:
+  name: "Zurich"
+  tier: 3
+  url: "https://www.zurich.co.uk/careers"
