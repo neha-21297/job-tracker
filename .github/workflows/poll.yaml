@@ -1,15 +1,13 @@
-# .github/workflows/poll.yml
+# .github/workflows/poll.yaml
 name: poll
 
 on:
   schedule:
-    - cron: "*/10 6-20 * * 1-5"      # every 10 min, weekday business hours UTC
-    - cron: "0 */3 * * *"            # 3-hourly otherwise
-  workflow_dispatch:                 # manual "check now" button
-  repository_dispatch:               # external cron can fire this
+    - cron: "*/10 6-20 * * 1-5"
+    - cron: "0 */3 * * *"
+  workflow_dispatch:
+  repository_dispatch:
 
-# Only one poll may modify main at a time. The commit/push step below also
-# rebases onto the latest main and retries if another process pushes first.
 concurrency:
   group: poll
   cancel-in-progress: false
@@ -21,7 +19,7 @@ permissions:
 jobs:
   poll:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -43,7 +41,7 @@ jobs:
         run: mkdir -p data docs config
 
       - name: Run poll script
-        run: python -m tracker.poll --tier 1,2
+        run: python -m tracker.poll --tier 1,2,3
         env:
           SMTP_HOST: ${{ secrets.SMTP_HOST }}
           SMTP_PORT: ${{ secrets.SMTP_PORT }}
@@ -56,13 +54,10 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
           git add data docs
 
-          # Nothing changed: there is no commit to make and nothing to push.
           if git diff --cached --quiet; then
             echo "No generated changes to commit."
             exit 0
@@ -70,25 +65,18 @@ jobs:
 
           git commit -m "poll: automatic update"
 
-          # The polling job can overlap with a manual push (or another actor
-          # updating main). Never force-push. Instead, integrate the newest
-          # remote main and retry the push if the remote moves between fetch
-          # and push.
           for attempt in 1 2 3 4 5; do
             echo "Push attempt ${attempt}/5"
             git fetch origin main
-
             if ! git rebase origin/main; then
               echo "Rebase conflict while integrating origin/main."
               git rebase --abort || true
               exit 1
             fi
-
             if git push origin HEAD:main; then
               echo "Push succeeded."
               exit 0
             fi
-
             echo "Remote main moved during the push; retrying..."
             sleep $((attempt * 2))
           done
