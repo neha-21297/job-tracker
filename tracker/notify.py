@@ -20,7 +20,6 @@ def send_email(subject: str, html_content: str) -> None:
 
     msg.attach(MIMEText(html_content, "html"))
 
-    # Outlook uses STARTTLS over port 587
     with smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=20) as server:
         server.ehlo()
         server.starttls()
@@ -29,7 +28,7 @@ def send_email(subject: str, html_content: str) -> None:
         server.sendmail(SMTP_USER, [NOTIFY_EMAIL], msg.as_string())
 
 
-def alert_batch(company: str, jobs: list, priority: int) -> None:
+def alert_batch(company: str, jobs: list[dict], priority: int) -> None:
     if not jobs:
         return
 
@@ -39,9 +38,9 @@ def alert_batch(company: str, jobs: list, priority: int) -> None:
     job_rows = "".join(
         f"""
         <li style="margin-bottom: 10px;">
-            <strong>{html.escape(j.title)}</strong><br/>
-            📍 Location: {html.escape(j.location or '—')}<br/>
-            <a href="{j.url}" style="color: #0066cc;">Apply Here &rarr;</a>
+            <strong>{html.escape(str(j.get('title', 'Untitled role')))}</strong><br/>
+            📍 Location: {html.escape(str(j.get('location') or '—'))}<br/>
+            <a href="{html.escape(str(j.get('url', '')), quote=True)}" style="color: #0066cc;">Apply Here &rarr;</a>
         </li>
         """
         for j in jobs
