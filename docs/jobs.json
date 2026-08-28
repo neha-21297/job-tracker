@@ -1,3 +1,273 @@
 {
- "jobs": []
+ "jobs": [
+  {
+   "company": "AtkinsR\u00e9alis",
+   "title": "UK Graduate Programmes",
+   "location": "UK",
+   "first_seen": "",
+   "url": "https://careers.atkinsrealis.com/en/early-careers/uk/graduates",
+   "status": "Opening Soon",
+   "opening": "Autumn 2026",
+   "source_type": "future",
+   "source": "Employer careers page"
+  },
+  {
+   "company": "Mott MacDonald",
+   "title": "UK 2027 graduate, placement and apprentice opportunities",
+   "location": "UK",
+   "first_seen": "",
+   "url": "https://www.mottmac.com/en-us/careers/early-careers/uk-europe/",
+   "status": "Opening Soon",
+   "opening": "Autumn 2026 (from late September)",
+   "source_type": "future",
+   "source": "Employer careers page"
+  },
+  {
+   "company": "AECOM",
+   "title": "UK & Ireland Graduate Development Programme",
+   "location": "UK",
+   "first_seen": "",
+   "url": "https://aecom.com/uk-ireland-graduate-careers-archive/uk-ireland-gdp-application-assessment/",
+   "status": "Rolling / individual vacancies",
+   "opening": "Monitor individual vacancies",
+   "source_type": "future",
+   "source": "Employer careers information"
+  },
+  {
+   "company": "AECOM",
+   "title": "Subsurface Utility Quality Assurance Coordinator ",
+   "location": "Nottingham, gb",
+   "first_seen": "2026-08-28T18:56:24+00:00",
+   "url": "https://api.smartrecruiters.com/v1/companies/AECOM2/postings/744000146028040",
+   "status": "Open",
+   "opening": "",
+   "source_type": "live"
+  },
+  {
+   "company": "AECOM",
+   "title": "Assistant Subsurface Utility Mapping Surveyor",
+   "location": "Nottingham, gb",
+   "first_seen": "2026-08-28T18:56:24+00:00",
+   "url": "https://api.smartrecruiters.com/v1/companies/AECOM2/postings/744000144038168",
+   "status": "Open",
+   "opening": "",
+   "source_type": "live"
+  },
+  {
+   "company": "AECOM",
+   "title": "Trainee Engineering Geologist",
+   "location": "Nottingham, gb",
+   "first_seen": "2026-08-28T18:56:24+00:00",
+   "url": "https://api.smartrecruiters.com/v1/companies/AECOM2/postings/744000140181639",
+   "status": "Open",
+   "opening": "",
+   "source_type": "live"
+  },
+  {
+   "company": "AECOM",
+   "title": "Civil Engineering Intern - Highways (Nov 2026)",
+   "location": "Newcastle, NSW, au",
+   "first_seen": "2026-08-28T18:56:24+00:00",
+   "url": "https://api.smartrecruiters.com/v1/companies/AECOM2/postings/744000137038950",
+   "status": "Open",
+   "opening": "",
+   "source_type": "live"
+  },
+  {
+   "company": "AECOM",
+   "title": "Risk Analyst",
+   "location": "New York, NY, us",
+   "first_seen": "2026-08-28T18:56:24+00:00",
+   "url": "https://api.smartrecruiters.com/v1/companies/AECOM2/postings/744000136887188",
+   "status": "Open",
+   "opening": "",
+   "source_type": "live"
+  },
+  {
+   "company": "AECOM",
+   "title": "Graduate Geotechnical Engineer and Engineering Geologist ",
+   "location": "Glasgow, Scotland, gb",
+   "first_seen": "2026-08-28T18:56:24+00:00",
+   "url": "https://api.smartrecruiters.com/v1/companies/AECOM2/postings/744000135972276",
+   "status": "Open",
+   "opening": "",
+   "source_type": "live"
+  },
+  {
+   "company": "AECOM",
+   "title": "Graduate Geotechnical Engineer and Engineering Geologist",
+   "location": "Edinburgh, Scotland, gb",
+   "first_seen": "2026-08-28T18:56:24+00:00",
+   "url": "https://api.smartrecruiters.com/v1/companies/AECOM2/postings/744000135971880",
+   "status": "Open",
+   "opening": "",
+   "source_type": "live"
+  },
+  {
+   "company": "AECOM",
+   "title": "Graduate Bridge Structures Engineer \u2013 Glasgow (2026)",
+   "location": "Glasgow, Scotland, gb",
+   "first_seen": "2026-08-28T18:56:24+00:00",
+   "url": "https://api.smartrecruiters.com/v1/companies/AECOM2/postings/744000133651138",
+   "status": "Open",
+   "opening": "",
+   "source_type": "live"
+  },
+  {
+   "company": "AECOM",
+   "title": "Graduate Bridge Structures Engineers - Chesterfield, Croydon, Glasgow, Leeds, Manchester, Newcastle (2026)",
+   "location": "Newcastle upon Tyne, England, gb",
+   "first_seen": "2026-08-28T18:56:24+00:00",
+   "url": "https://api.smartrecruiters.com/v1/companies/AECOM2/postings/744000133650321",
+   "status": "Open",
+   "opening": "",
+   "source_type": "live"
+  },
+  {
+   "company": "AECOM",
+   "title": "Graduate Bridge Structures Engineer \u2013 Croydon (2026)",
+   "location": "Croydon, England, gb",
+   "first_seen": "2026-08-28T18:56:24+00:00",
+   "url": "https://api.smartrecruiters.com/v1/companies/AECOM2/postings/744000133629033",
+   "status": "Open",
+   "opening": "",
+   "source_type": "live"
+  },
+  {
+   "company": "AECOM",
+   "title": "Graduate Bridge Structures Engineers \u2013 Leeds (2026)",
+   "location": "Leeds, England, gb",
+   "first_seen": "2026-08-28T18:56:24+00:00",
+   "url": "https://api.smartrecruiters.com/v1/companies/AECOM2/postings/744000133630320",
+   "status": "Open",
+   "opening": "",
+   "source_type": "live"
+  },
+  {
+   "company": "AECOM",
+   "title": "Graduate Bridge Structures Engineer \u2013 Chesterfield (2026)",
+   "location": "Chesterfield, England, gb",
+   "first_seen": "2026-08-28T18:56:24+00:00",
+   "url": "https://api.smartrecruiters.com/v1/companies/AECOM2/postings/744000133628579",
+   "status": "Open",
+   "opening": "",
+   "source_type": "live"
+  },
+  {
+   "company": "AECOM",
+   "title": "Graduate Quantity Surveyor or Employers Agent - Norwich or Cambridge",
+   "location": "Norwich, England, gb",
+   "first_seen": "2026-08-28T18:56:24+00:00",
+   "url": "https://api.smartrecruiters.com/v1/companies/AECOM2/postings/744000131500419",
+   "status": "Open",
+   "opening": "",
+   "source_type": "live"
+  },
+  {
+   "company": "AECOM",
+   "title": "Graduate Quantity Surveyor or Employers Agent - Cambridge",
+   "location": "Cambridge, England, gb",
+   "first_seen": "2026-08-28T18:56:24+00:00",
+   "url": "https://api.smartrecruiters.com/v1/companies/AECOM2/postings/744000131499444",
+   "status": "Open",
+   "opening": "",
+   "source_type": "live"
+  },
+  {
+   "company": "AECOM",
+   "title": "Aquatic Ecologist Graduate - Nottingham or Basingstoke  (Immediate/Summer 26 start)",
+   "location": "Nottingham, England, gb",
+   "first_seen": "2026-08-28T18:56:24+00:00",
+   "url": "https://api.smartrecruiters.com/v1/companies/AECOM2/postings/744000130270425",
+   "status": "Open",
+   "opening": "",
+   "source_type": "live"
+  },
+  {
+   "company": "AECOM",
+   "title": "Civil Engineering Graduate Water / Edinburgh (Summer 2026 starts)",
+   "location": "Edinburgh, Scotland, gb",
+   "first_seen": "2026-08-28T18:56:24+00:00",
+   "url": "https://api.smartrecruiters.com/v1/companies/AECOM2/postings/744000107463208",
+   "status": "Open",
+   "opening": "",
+   "source_type": "live"
+  },
+  {
+   "company": "AECOM",
+   "title": "Civil Engineering Graduate Water /  Exeter (Summer 2026 starts)",
+   "location": "Exeter, England, gb",
+   "first_seen": "2026-08-28T18:56:24+00:00",
+   "url": "https://api.smartrecruiters.com/v1/companies/AECOM2/postings/744000099506730",
+   "status": "Open",
+   "opening": "",
+   "source_type": "live"
+  },
+  {
+   "company": "AECOM",
+   "title": " Graduate Electrical Engineer / Water - Croydon & Exeter (Summer 2026 starts)",
+   "location": "Exeter, England, gb",
+   "first_seen": "2026-08-28T18:56:24+00:00",
+   "url": "https://api.smartrecruiters.com/v1/companies/AECOM2/postings/744000082370207",
+   "status": "Open",
+   "opening": "",
+   "source_type": "live"
+  },
+  {
+   "company": "AECOM",
+   "title": "Graduate Electrical Engineer / Water - Croydon & Exeter (Summer 2026 starts)",
+   "location": "Croydon, England, gb",
+   "first_seen": "2026-08-28T18:56:24+00:00",
+   "url": "https://api.smartrecruiters.com/v1/companies/AECOM2/postings/744000082370515",
+   "status": "Open",
+   "opening": "",
+   "source_type": "live"
+  },
+  {
+   "company": "AECOM",
+   "title": "Graduate Electrical Engineer / Water - Belfast (Summer 2026 starts)",
+   "location": "Belfast, Northern Ireland, gb",
+   "first_seen": "2026-08-28T18:56:24+00:00",
+   "url": "https://api.smartrecruiters.com/v1/companies/AECOM2/postings/744000081988293",
+   "status": "Open",
+   "opening": "",
+   "source_type": "live"
+  },
+  {
+   "company": "Mott MacDonald",
+   "title": "Graduate Mechanical Engineer",
+   "location": "United Kingdom",
+   "first_seen": "2026-08-28T18:56:29+00:00",
+   "url": "https://apply.mottmac.com/job/Shifnal-Graduate-Mechanical-Engineer/1369276657/",
+   "status": "Open",
+   "opening": "",
+   "source_type": "live"
+  }
+ ],
+ "future_openings": [
+  {
+   "company": "AtkinsR\u00e9alis",
+   "programme": "UK Graduate Programmes",
+   "opening": "Autumn 2026",
+   "status": "Opening Soon",
+   "url": "https://careers.atkinsrealis.com/en/early-careers/uk/graduates",
+   "source": "Employer careers page"
+  },
+  {
+   "company": "Mott MacDonald",
+   "programme": "UK 2027 graduate, placement and apprentice opportunities",
+   "opening": "Autumn 2026 (from late September)",
+   "status": "Opening Soon",
+   "url": "https://www.mottmac.com/en-us/careers/early-careers/uk-europe/",
+   "source": "Employer careers page"
+  },
+  {
+   "company": "AECOM",
+   "programme": "UK & Ireland Graduate Development Programme",
+   "opening": "Monitor individual vacancies",
+   "status": "Rolling / individual vacancies",
+   "url": "https://aecom.com/uk-ireland-graduate-careers-archive/uk-ireland-gdp-application-assessment/",
+   "source": "Employer careers information"
+  }
+ ]
 }
