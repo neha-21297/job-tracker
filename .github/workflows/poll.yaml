@@ -3,14 +3,14 @@ name: poll
 
 on:
   schedule:
-    - cron: "*/10 6-20 * * 1-5"      # every 10 min, weekday business hours UTC
-    - cron: "0 */3 * * *"            # 3-hourly otherwise
-  workflow_dispatch:                 # manual "check now" button
-  repository_dispatch:               # external cron can fire this
+    - cron: "*/10 6-20 * * 1-5"      # every 10 min, weekday business hours UTC[cite: 1, 2]
+    - cron: "0 */3 * * *"            # 3-hourly otherwise[cite: 1, 2]
+  workflow_dispatch:                 # manual "check now" button[cite: 1, 2]
+  repository_dispatch:               # external cron can fire this[cite: 1, 2]
 
 concurrency:
   group: poll
-  cancel-in-progress: false          # never let two runs race the git push
+  cancel-in-progress: false          # never let two runs race the git push[cite: 1, 2]
 
 permissions:
   contents: write
@@ -35,7 +35,7 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Ensure directories exist
+      - name: Ensure data and docs directories exist
         run: mkdir -p data docs config
 
       - name: Run poll script
@@ -55,8 +55,9 @@ jobs:
           git add -A data docs
           if ! git diff --staged --quiet; then
             git commit -m "poll: $(date -u +%FT%TZ)"
-            git pull --rebase origin ${{ github.ref_name }}
-            git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:${{ github.ref_name }}
+            REPO_URL="https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
+            git pull --rebase "${REPO_URL}" "${{ github.ref_name }}"
+            git push "${REPO_URL}" "HEAD:${{ github.ref_name }}"
           fi
 
       - name: Heartbeat
