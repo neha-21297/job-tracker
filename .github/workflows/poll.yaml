@@ -1,15 +1,15 @@
-# .github/workflows/poll.yml
 name: poll
+
 on:
   schedule:
-    - cron: "*/10 6-20 * * 1-5"      # every 10 min, weekday business hours UTC
-    - cron: "0 */3 * * *"            # 3-hourly otherwise
-  workflow_dispatch:                 # manual "check now" button
-  repository_dispatch:               # external cron can fire this
+    - cron: "*/10 6-20 * * 1-5"
+    - cron: "0 */3 * * *"
+  workflow_dispatch:
+  repository_dispatch:
 
 concurrency:
   group: poll
-  cancel-in-progress: false          # never let two runs race the git push
+  cancel-in-progress: false
 
 permissions:
   contents: write
@@ -20,34 +20,39 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
-          token: ${{ secrets.PAT }}   # PAT so commits count as repo activity
+          fetch-depth: 0
 
-      - uses: actions/setup-python@v5
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-          cache: pip                  # saves ~15s/run
+          cache: "pip"
 
-      - run: pip install -r requirements.txt
+      - name: Install dependencies
+        run: pip install -r requirements.txt
 
-      - run: python -m tracker.poll --tier 1,2
+      - name: Ensure directories exist
+        run: mkdir -p data docs config
+
+      - name: Run poll script
+        run: python -m tracker.poll --tier 1,2
         env:
           SMTP_HOST: ${{ secrets.SMTP_HOST }}
           SMTP_PORT: ${{ secrets.SMTP_PORT }}
           SMTP_USER: ${{ secrets.SMTP_USER }}
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
           NOTIFY_EMAIL: ${{ secrets.NOTIFY_EMAIL }}
-          GITHUB_TOKEN: ${{ secrets.PAT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Commit if changed
+      - name: Commit and push changes
         run: |
-          git config user.name  "job-tracker"
-          git config user.email "bot@users.noreply.github.com"
-          git add data docs
-          git diff --staged --quiet || git commit -m "poll: $(date -u +%FT%TZ)"
-          git push
-
-      - name: Heartbeat
-        if: success()
-        run: curl -fsS -m 10 "${{ secrets.HEALTHCHECK_URL }}" || true
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A data docs
+          if ! git diff --staged --quiet; then
+            git commit -m "poll: $(date -u +%FT%TZ)"
+            git push origin HEAD:${{ github.ref_name }}
+          fi
