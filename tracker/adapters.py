@@ -206,12 +206,55 @@ def _career_link_jobs(html: str, base_url: str) -> list[dict]:
     return result
 
 
+def _discover_ats(html: str) -> list[tuple[str, str]]:
+    """Discover public ATS boards embedded in otherwise-JS career pages.
+
+    Returns (adapter, identifier) pairs. This is deliberately conservative: it
+    only follows URLs that identify a public job-board endpoint, not arbitrary
+    links on the page.
+    """
+    found: list[tuple[str, str]] = []
+
+    def add(adapter: str, value: str):
+        value = unescape(value).strip().strip('/')
+        pair = (adapter, value)
+        if value and pair not in found:
+            found.append(pair)
+
+    for value in re.findall(r'https?://(?:boards-api\.greenhouse\.io/v1/boards/|boards\.greenhouse\.io/)([A-Za-z0-9_-]+)', html, re.I):
+        add("greenhouse", value)
+    for value in re.findall(r'https?://jobs\.ashbyhq\.com/([A-Za-z0-9_-]+)', html, re.I):
+        add("ashby", value)
+    for value in re.findall(r'https?://(?:api\.lever\.co/v0/postings/|jobs\.lever\.co/)([A-Za-z0-9_-]+)', html, re.I):
+        add("lever", value)
+    for value in re.findall(r'https?://(?:api\.smartrecruiters\.com/v1/companies/|jobs\.smartrecruiters\.com/)([A-Za-z0-9_-]+)', html, re.I):
+        add("smartrecruiters", value)
+    for value in re.findall(r'https?://apply\.workable\.com/([A-Za-z0-9_-]+)', html, re.I):
+        add("workable", value)
+    return found
+
+
 def fetch_career_page(url: str) -> list[dict]:
     with _client() as client:
         response = client.get(url); response.raise_for_status(); html = response.text
     result = _jsonld_jobs(html, url)
     for job in _embedded_jobs(html, url) + _career_link_jobs(html, url):
         if not any(x["url"] == job["url"] for x in result): result.append(job)
+
+    # Many modern career pages are only a shell around an ATS. If the shell
+    # contains no directly parseable jobs, query the embedded public board.
+    if not result:
+        for adapter, identifier in _discover_ats(html):
+            try:
+                if adapter == "greenhouse": result = fetch_greenhouse(identifier)
+                elif adapter == "ashby": result = fetch_ashby(identifier)
+                elif adapter == "lever": result = fetch_lever(identifier)
+                elif adapter == "smartrecruiters": result = fetch_smartrecruiters(identifier)
+                elif adapter == "workable": result = fetch_workable(identifier)
+            except Exception:
+                continue
+            if result:
+                break
     return result
 
 
@@ -241,6 +284,8 @@ def fetch_source(item: dict) -> list[dict]:
     if key == "jacobs": return fetch_career_page("https://www.jacobs.com/careers-jacobs")
     if "moody's" in key or "moodys" in key: return fetch_career_page("https://careers.moodys.com/en/search_jobs")
     if key == "totalenergies": return fetch_career_page("https://careers.totalenergies.com/en/search/grid/Jobs%20at%20TotalEnergies")
+    if key == "ramboll": return fetch_smartrecruiters("Ramboll3")
+    if key == "verisk": return fetch_smartrecruiters("Verisk")
 
     adapter = item.get("adapter", "career_page")
     if adapter == "greenhouse": return fetch_greenhouse(item["token"])
