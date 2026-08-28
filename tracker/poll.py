@@ -25,7 +25,6 @@ def _matches_any(patterns: list[str], value: str) -> bool:
 
 
 def _is_relevant_job(job: dict, rules: dict) -> bool:
-    """Keep UK graduate/early-career and relevant geoscience/risk roles only."""
     title = str(job.get("title", ""))
     location = str(job.get("location", ""))
 
@@ -37,12 +36,8 @@ def _is_relevant_job(job: dict, rules: dict) -> bool:
         return False
     if include_title and not _matches_any(include_title, title):
         return False
-
-    # Do not treat a bare "Remote" label as UK. That was the reason US remote
-    # vacancies from Planet/Beam leaked into the tracker.
     if uk_locations and not _matches_any(uk_locations, location):
         return False
-
     return True
 
 
@@ -73,19 +68,17 @@ def run_poll(tiers: list[str]):
             jobs = [job for job in fetched if _is_relevant_job(job, rules)]
             print(f"-> {len(fetched)} fetched, {len(jobs)} relevant UK roles")
 
-            new_jobs, reopened_jobs, _ = diff(source_key, jobs, state)
+            result = diff(source_key, jobs, state)
+            new_jobs, reopened_jobs = result[0], result[1]
 
             if new_jobs:
                 print(f"-> Found {len(new_jobs)} new roles for {company}")
                 alert_batch(company, new_jobs, priority=1)
-
             if reopened_jobs:
                 print(f"-> Found {len(reopened_jobs)} reopened roles for {company}")
                 alert_batch(company, reopened_jobs, priority=2)
 
         except Exception as exc:
-            # One broken careers page must not prevent every other company
-            # from being checked.
             print(f"Error while polling {company}: {exc}")
 
     save_state(state)
@@ -95,12 +88,7 @@ def run_poll(tiers: list[str]):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Poll configured company job sources")
-    parser.add_argument(
-        "--tier",
-        type=str,
-        default="1,2,3",
-        help="Comma-separated source tiers to run",
-    )
+    parser.add_argument("--tier", type=str, default="1,2,3", help="Comma-separated source tiers to run")
     args = parser.parse_args()
     selected_tiers = [t.strip() for t in args.tier.split(",") if t.strip()]
     run_poll(selected_tiers)
