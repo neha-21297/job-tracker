@@ -149,6 +149,7 @@
  "amey": {},
  "aon": {},
  "aplitrak": {},
+ "arup": {},
  "atelier_ten": {},
  "aurora_energy_research": {},
  "awe": {},
@@ -158,6 +159,7 @@
  "binnies": {},
  "bmt": {},
  "boskalis": {},
+ "bp": {},
  "buro_happold": {},
  "bwb": {},
  "carbon_brief": {},
@@ -165,7 +167,15 @@
  "cgl": {},
  "chevron": {},
  "conocophillips": {},
- "dalcour_maclaren": {},
+ "dalcour_maclaren": {
+  "/job/Leeds/Graduate-Surveyor_JR2005": {
+   "first_seen": "2026-08-28T19:09:45+00:00",
+   "h": "545148b09434d909",
+   "location": "Leeds",
+   "title": "Graduate Surveyor",
+   "url": "https://dalcourmaclaren.wd3.myworkdayjobs.com/Dalcour-Maclaren-Careers/job/Leeds/Graduate-Surveyor_JR2005"
+  }
+ },
  "dnv": {},
  "dof": {},
  "edf": {},
@@ -189,11 +199,13 @@
  "iceye": {},
  "icf": {},
  "inge": {},
+ "jacobs": {},
  "jcb": {},
  "kent": {},
  "lloyds": {},
  "maxar": {},
  "midsummer": {},
+ "moodys": {},
  "mott_macdonald": {
   "https://apply.mottmac.com/job/Shifnal-Graduate-Mechanical-Engineer/1369276657/": {
    "first_seen": "2026-08-28T18:56:29+00:00",
@@ -228,6 +240,7 @@
  "seaway": {},
  "sep_geophysics": {},
  "sepa": {},
+ "shell": {},
  "slb": {},
  "slr": {},
  "soil_engineering": {},
@@ -241,10 +254,27 @@
  "telespazio": {},
  "tgs": {},
  "thg": {},
+ "totalenergies": {},
  "ukho": {},
  "van_oord": {},
  "vattenfall": {},
  "verisk": {},
+ "viridien": {
+  "/job/Crawley-United-Kingdom/Remote-Sensing-Specialist_JR101437": {
+   "first_seen": "2026-08-28T19:07:54+00:00",
+   "h": "d6fbfbc47c4fa23d",
+   "location": "Crawley, United Kingdom",
+   "title": "Remote Sensing Specialist",
+   "url": "https://cgg.wd103.myworkdayjobs.com/viridiencareers/job/Crawley-United-Kingdom/Remote-Sensing-Specialist_JR101437"
+  },
+  "/job/Crawley-United-Kingdom/Software-Engineering-Intern_JR101336-1": {
+   "first_seen": "2026-08-28T19:07:54+00:00",
+   "h": "0b7370c91a727efc",
+   "location": "Crawley, United Kingdom",
+   "title": "Software Engineering Intern",
+   "url": "https://cgg.wd103.myworkdayjobs.com/viridiencareers/job/Crawley-United-Kingdom/Software-Engineering-Intern_JR101336-1"
+  }
+ },
  "wellcome": {},
  "wessex_archaeology": {},
  "wintershall_dea": {},
