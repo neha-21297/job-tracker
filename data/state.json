@@ -1,1 +1,804 @@
-{}
+{
+ "Beam": {
+  "4705417005": {
+   "first_seen": "2026-08-28T18:21:51+00:00",
+   "h": "d18fb1496e4a6337",
+   "location": "NYC",
+   "title": "Part Time Saturday Enrichment Instructor (NYC)",
+   "url": "https://job-boards.greenhouse.io/beam/jobs/4705417005"
+  },
+  "4707431005": {
+   "first_seen": "2026-08-28T18:21:51+00:00",
+   "h": "da0e031662028a44",
+   "location": "Los Angeles",
+   "title": "Part Time Saturday Enrichment Instructor (Los Angeles)",
+   "url": "https://job-boards.greenhouse.io/beam/jobs/4707431005"
+  },
+  "4719241005": {
+   "first_seen": "2026-08-28T18:21:51+00:00",
+   "h": "b6b08e0102330871",
+   "location": "New York",
+   "title": "Part-Time After School Math Educator (Hybrid - NYC/Canarsie)",
+   "url": "https://job-boards.greenhouse.io/beam/jobs/4719241005"
+  },
+  "4720140005": {
+   "first_seen": "2026-08-28T18:21:51+00:00",
+   "h": "353bd2e5967a9416",
+   "location": "Los Angeles",
+   "title": "Saturday Math Teaching Assistant (Los Angeles)",
+   "url": "https://job-boards.greenhouse.io/beam/jobs/4720140005"
+  }
+ },
+ "Planet": {
+  "7374533": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "658b64b0dea71166",
+   "location": "Netherlands, Remote",
+   "title": "D&I Program Manager, Professional Services",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/7374533"
+  },
+  "7439062": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "4ddb3827c6f88809",
+   "location": "Germany, Remote",
+   "title": "D&I Program Manager, Professional Services",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/7439062"
+  },
+  "7476623": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "5358ae32d5dcf124",
+   "location": "San Francisco, CA",
+   "title": "Opto-Mechanical Engineer",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/7476623"
+  },
+  "7490266": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "1544cf310f53b22a",
+   "location": "Slovenia, Remote",
+   "title": "D&I Program Manager, Professional Services",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/7490266"
+  },
+  "7490269": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "1f66c303515803cb",
+   "location": "Austria, Remote",
+   "title": "D&I Program Manager, Professional Services",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/7490269"
+  },
+  "7490275": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "20c80adeaea5fd4d",
+   "location": "United Kingdom, Remote",
+   "title": "D&I Program Manager, Professional Services",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/7490275"
+  },
+  "7524896": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "626eb88ec075a879",
+   "location": "San Francisco, CA",
+   "title": "Sr. Satcom Modem Engineer",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/7524896"
+  },
+  "7527437": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "cee14127cd5f78d7",
+   "location": "United States, Remote ",
+   "title": "FP&A Revenue Manager",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/7527437"
+  },
+  "7555019": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "b8cb56a3946ff9f3",
+   "location": "United States, Remote",
+   "title": "Software Engineer, Platform Operations",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/7555019"
+  },
+  "7564777": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "37964b4a16835c76",
+   "location": "Japan, Remote",
+   "title": "Account Executive, Defence & Intelligence",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/7564777"
+  },
+  "7593419": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "b8575552bc3fdaae",
+   "location": "Canada, Remote",
+   "title": "Software Engineer, Platform Operations",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/7593419"
+  },
+  "7603801": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "65835b6d76a78e0e",
+   "location": "San Francisco, CA",
+   "title": "Senior Engineering Manager - AI Geospatial Assistant Team",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/7603801"
+  },
+  "7603831": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "b7b2dfbfe4e522ef",
+   "location": "France, Remote",
+   "title": "Account Executive, Defence & Intelligence, France",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/7603831"
+  },
+  "7622544": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "d2a3af97344e6fe4",
+   "location": "France, Remote",
+   "title": "PreSales Sr. Solutions Architect - French Defense and Intelligence",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/7622544"
+  },
+  "7644560": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "42697991da98ee86",
+   "location": "San Francisco, CA",
+   "title": "Senior Camera Systems Engineer",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/7644560"
+  },
+  "7700271": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "669ceea45582e199",
+   "location": "United Kingdom, Remote",
+   "title": "PreSales Sr. Solutions Architect - French Defense and Intelligence",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/7700271"
+  },
+  "7700887": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "d53552863263f45a",
+   "location": "Washington D.C",
+   "title": "Global Deal Desk Senior Manager",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/7700887"
+  },
+  "7704446": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "69f7c218d3b3446d",
+   "location": "Washington, D.C.",
+   "title": "US Army Account Executive",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/7704446"
+  },
+  "7711289": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "c5c74c642d8566a5",
+   "location": "Sweden, Remote",
+   "title": "Account Executive, Defence & Intelligence, Sweden",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/7711289"
+  },
+  "7727892": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "9ecb61fc563ad3cc",
+   "location": "Arlington, VA",
+   "title": "Customer Success Manager, U.S. Defense and Intelligence",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/7727892"
+  },
+  "7740653": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "ce17e04022ea6762",
+   "location": "San Francisco, CA",
+   "title": "Senior Manager, Talent Operations",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/7740653"
+  },
+  "7766342": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "5a0da99c5f6ceb4f",
+   "location": "Arlington, VA",
+   "title": "Global Deal Desk Senior Manager",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/7766342"
+  },
+  "7772699": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "fd937ae9db7d921f",
+   "location": "South Korea, Remote",
+   "title": "Customer Success Manager  (D&I - South Korea)",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/7772699"
+  },
+  "7870473": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "3aaccfd89f605554",
+   "location": "San Francisco, CA",
+   "title": "Vice President, Revenue Operations",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/7870473"
+  },
+  "7907756": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "1e14a4fd3ec8b86a",
+   "location": "Stockholm, Sweden",
+   "title": "Deployment Strategist, Professional Services Global D&I",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/7907756"
+  },
+  "7938235": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "a646dd6b82c9af45",
+   "location": "San Francisco, CA",
+   "title": "Senior Director, Creative Marketing",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/7938235"
+  },
+  "7963971": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "6cee8a7a61d99c42",
+   "location": "Berlin, Germany",
+   "title": "Senior Spacecraft Qualification Engineer",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/7963971"
+  },
+  "7964648": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "76be14501caba950",
+   "location": "San Francisco, CA",
+   "title": "Senior Product Marketing Manager, Global Marketing Solutions",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/7964648"
+  },
+  "7967527": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "e706ff683dc0f8ce",
+   "location": "United States, Remote",
+   "title": "Senior Software Engineer, Storage Infrastructure",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/7967527"
+  },
+  "7967529": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "74e5b68393e7740d",
+   "location": "San Francisco, CA",
+   "title": "Senior Product Manager, Analysis Ready Data Products",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/7967529"
+  },
+  "7967533": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "3ec2448f086815db",
+   "location": "San Francisco, CA",
+   "title": "Executive Communications Manager",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/7967533"
+  },
+  "7972328": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "47ef4eb2ebd5ba97",
+   "location": "Berlin, Germany",
+   "title": "Technical Program Manager",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/7972328"
+  },
+  "7979253": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "9de63bcf175c9c89",
+   "location": "San Francisco, CA",
+   "title": "Senior Contracts Manager",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/7979253"
+  },
+  "7979301": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "a27d341dc44c03a1",
+   "location": "San Francisco, CA",
+   "title": "Technical Program Manager, GTM Ops",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/7979301"
+  },
+  "7992823": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "da1f7ea36625245f",
+   "location": "Berlin, Germany",
+   "title": "Senior Missions Manager, Constellation Services",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/7992823"
+  },
+  "7992927": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "6776a034c29b09b6",
+   "location": "Berlin, Germany",
+   "title": "Revenue Operations Analyst - Working Student",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/7992927"
+  },
+  "8008355": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "ec77d3ed60c4aa2f",
+   "location": "United States, Remote",
+   "title": "Software Engineer, Missions Software",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8008355"
+  },
+  "8011111": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "61f67fe01417166b",
+   "location": "United States, Remote",
+   "title": "Senior Forward Deployed Engineer",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8011111"
+  },
+  "8013156": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "81a2d5d68c2ad4ec",
+   "location": "APAC, Remote",
+   "title": "Senior Solutions Architect I, Pre-Sales - South Korea Defense & Intelligence",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8013156"
+  },
+  "8014103": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "8f324ebc05e503ee",
+   "location": "Washington, DC; Denver, CO",
+   "title": "Technical Program Manager, Trade Compliance",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8014103"
+  },
+  "8014499": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "f620984846853c05",
+   "location": "San Francisco, CA",
+   "title": "Vice President & Chief Information Security Officer",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8014499"
+  },
+  "8016466": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "75fafac9c0f6a2a7",
+   "location": "Arlington, VA",
+   "title": "Senior Data Engineer",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8016466"
+  },
+  "8022265": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "539cb4f9d5b366a5",
+   "location": "United States, Remote",
+   "title": "Software Engineer - Platform, Mission Systems",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8022265"
+  },
+  "8035026": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "ab3fc0184c7dafd5",
+   "location": "Berlin, Germany",
+   "title": "Senior Program Manager, Professional Services for Defense and Intelligence",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8035026"
+  },
+  "8035138": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "540f5a2373cd4888",
+   "location": "LATAM, Remote",
+   "title": "Pre-Sales Solutions Architect, LATAM",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8035138"
+  },
+  "8038788": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "fef175fad5a3ef97",
+   "location": "Berlin, Germany",
+   "title": "Knowledge & AI Agent Manager",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8038788"
+  },
+  "8042428": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "c546720190db4a99",
+   "location": "Berlin, Germany",
+   "title": "Technical Support Engineer III",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8042428"
+  },
+  "8044691": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "9e3b2e85337d9b45",
+   "location": "San Francisco, CA",
+   "title": "Data Visualization Engineer",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8044691"
+  },
+  "8045328": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "b64840c10cb82c52",
+   "location": "San Francisco, CA",
+   "title": "Flight Dynamics Engineer, Orbits R&D",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8045328"
+  },
+  "8046738": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "d0e8aee73d796600",
+   "location": "Seoul, South Korea",
+   "title": "Senior Deployment Strategist",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8046738"
+  },
+  "8052727": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "f906c86be7087f75",
+   "location": "Berlin, Germany",
+   "title": "Senior Data Engineer, Constellation Services",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8052727"
+  },
+  "8052729": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "bf1c520ecd27636b",
+   "location": "APAC, Remote",
+   "title": "Customer Success Manager",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8052729"
+  },
+  "8053281": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "ee774fe1b1fa8195",
+   "location": "San Francisco, CA",
+   "title": "Senior Manager of Product, Imagery",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8053281"
+  },
+  "8055706": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "d3669c2e602bc089",
+   "location": "San Francisco, CA",
+   "title": "Director, Sales Development",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8055706"
+  },
+  "8067731": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "0ad0deac5b2af612",
+   "location": "Arlington, VA",
+   "title": "Technical Program Manager, Solutions",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8067731"
+  },
+  "8068089": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "19e3f3cd00ec7581",
+   "location": "Washington, D.C.",
+   "title": "Senior Engineering Manager, D&I Analytics",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8068089"
+  },
+  "8069677": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "b61c63273c7ac69b",
+   "location": "San Francisco, CA",
+   "title": "Senior Analyst, International Trade Compliance",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8069677"
+  },
+  "8077154": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "8e9436f42338117f",
+   "location": "San Francisco, CA",
+   "title": "Analyst, International Trade Compliance",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8077154"
+  },
+  "8079170": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "d914f0992709cdf4",
+   "location": "Berlin, Germany",
+   "title": "Regional Marketing Manager, EMEA",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8079170"
+  },
+  "8079172": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "3d94094c6e55731d",
+   "location": "Berlin, Germany",
+   "title": "ABM Marketing Manager, EMEA",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8079172"
+  },
+  "8079178": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "a267eba19c25e908",
+   "location": "US, Remote",
+   "title": "Industry Account Executive, United States",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8079178"
+  },
+  "8081498": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "2a89d2da21333ccd",
+   "location": "San Francisco, CA",
+   "title": "Senior Director, Global Talent Acquisition",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8081498"
+  },
+  "8088251": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "f8ba6789270c89f9",
+   "location": "San Francisco, CA; Washington, D.C.",
+   "title": "Manager, Customer Success - Commercial Markets",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8088251"
+  },
+  "8088256": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "70bc24db05a51b5b",
+   "location": "Haarlem, Netherlands",
+   "title": "Senior Product Designer",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8088256"
+  },
+  "8088361": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "d02321c24375afb0",
+   "location": "UAE",
+   "title": "Senior Satellite Constellation Manager",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8088361"
+  },
+  "8094173": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "2541047203eecae1",
+   "location": "San Francisco, CA",
+   "title": "Sales Development Representative, North America Civil Government",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8094173"
+  },
+  "8096076": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "5aba3b5e822936b9",
+   "location": "Washington, DC",
+   "title": "Manager, People Operations",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8096076"
+  },
+  "8096079": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "87f04eed2990000e",
+   "location": "San Francisco, CA",
+   "title": "Software Engineer",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8096079"
+  },
+  "8103494": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "869cef14a881371a",
+   "location": "LATAM, Remote",
+   "title": "Customer Onboarding Specialist",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8103494"
+  },
+  "8103496": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "e94998d4c057a224",
+   "location": "Berlin, Germany",
+   "title": "Working Student, Customer Success",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8103496"
+  },
+  "8103527": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "67d04be3052b3b9d",
+   "location": "Berlin, Germany",
+   "title": "Data Analyst",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8103527"
+  },
+  "8106198": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "2013de83b891f283",
+   "location": "US, Remote; Canada, Remote",
+   "title": "Senior Site Reliability Engineer",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8106198"
+  },
+  "8112641": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "08ba6cc43e00e629",
+   "location": "Washington D.C.",
+   "title": "Senior Contracts Manager",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8112641"
+  },
+  "8119750": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "d4d436a18f28a1aa",
+   "location": "San Francisco, CA; Arlington, VA",
+   "title": "Customer Success Manager II, Commercial Markets",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8119750"
+  },
+  "8126704": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "0e6a33ed33c92807",
+   "location": "Berlin, Germany",
+   "title": "Senior Product Designer",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8126704"
+  },
+  "8128410": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "0e458c80147dd6b2",
+   "location": "Brazil, Remote",
+   "title": "Customer Success Manager II",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8128410"
+  },
+  "8128479": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "ac015802b57158bb",
+   "location": "Berlin, Germany",
+   "title": "Senior Cost Accountant ",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8128479"
+  },
+  "8128721": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "67b110163697c61d",
+   "location": "San Francisco, CA",
+   "title": "Data Analyst",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8128721"
+  },
+  "8133689": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "b6dc9c48d43f980e",
+   "location": "San Francisco, CA",
+   "title": "Senior Data Visualization Engineer",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8133689"
+  },
+  "8133691": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "f69a38a88863f213",
+   "location": "San Francisco, CA",
+   "title": "Videographer",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8133691"
+  },
+  "8137141": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "e8dd107ae1cde7e5",
+   "location": "Arlington, VA",
+   "title": "Director of Government Affairs",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8137141"
+  },
+  "8140020": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "5bdf8fab06c8bd70",
+   "location": "San Francisco, CA",
+   "title": "Customer and Partner Marketing Specialist",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8140020"
+  },
+  "8140255": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "6acaa09b9d7d4b25",
+   "location": "San Francisco, CA",
+   "title": " Senior Product Manager, D&I Tasking Solutions",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8140255"
+  },
+  "8140259": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "4665987a7de8092e",
+   "location": "San Francisco, CA",
+   "title": "Senior Product Manager, Mission Solutions",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8140259"
+  },
+  "8140278": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "33948c41d068b951",
+   "location": "San Francisco, CA",
+   "title": "PCB Design Engineer",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8140278"
+  },
+  "8142905": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "d6a348de0701049e",
+   "location": "Graz, Austria",
+   "title": "Solution Delivery Engineer",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8142905"
+  },
+  "8142926": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "19d54008aafcd64a",
+   "location": "Arlington, VA",
+   "title": "Senior Technical Program Manager",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8142926"
+  },
+  "8143131": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "693ac7260b0eccfa",
+   "location": "Berlin, Germany",
+   "title": "Customer Success Manager, Civil Government",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8143131"
+  },
+  "8143135": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "7ccf3b1dc2e8cb6f",
+   "location": "United Arab Emirates, Remote",
+   "title": "Customer Success Manager, Civil Government",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8143135"
+  },
+  "8148595": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "0edc3e9f518c69af",
+   "location": "Berlin, Germany",
+   "title": "Ground Station Engineer",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8148595"
+  },
+  "8154608": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "9823c575b54d121e",
+   "location": "Arlington, VA",
+   "title": "Vice President, Revenue Operations",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8154608"
+  },
+  "8154628": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "5737d003fb8850b4",
+   "location": "Ljubljana, Slovenia",
+   "title": "IT Support Engineer",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8154628"
+  },
+  "8157898": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "2adb8aea7a4e3b4f",
+   "location": "London, United Kingdom",
+   "title": "ABM Marketing Manager, EMEA",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8157898"
+  },
+  "8159684": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "55622b4b2dac5b23",
+   "location": "Haarlem, Netherlands",
+   "title": "Solution Delivery Engineer",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8159684"
+  },
+  "8159685": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "824e1b77a3e6d51e",
+   "location": "Ljubljana, Slovenia",
+   "title": "Solution Delivery Engineer",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8159685"
+  },
+  "8160311": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "a396ce27febed56a",
+   "location": "Canada, Remote",
+   "title": "Software Engineer, Missions Software",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8160311"
+  },
+  "8160328": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "acb53f45ab34d148",
+   "location": "Canada, Remote",
+   "title": "Software Engineer - Platform, Mission Systems",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8160328"
+  },
+  "8160736": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "2252814d6e71e07a",
+   "location": "Arlington, VA",
+   "title": "Data Analyst",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8160736"
+  },
+  "8160737": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "4de86d917684bb1c",
+   "location": "Arlington, VA",
+   "title": "Senior Product Manager, Analysis Ready Data Products",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8160737"
+  },
+  "8160743": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "5d13ec501ae13e28",
+   "location": "Arlington, VA",
+   "title": "Senior Product Manager, D&I Tasking Solutions",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8160743"
+  },
+  "8160746": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "bd5d472b3d7187c8",
+   "location": "Arlington, VA",
+   "title": "Senior Product Manager, Mission Solutions",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8160746"
+  },
+  "8160748": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "1348ba43b6e1118c",
+   "location": "Arlington, VA",
+   "title": "Senior Product Marketing Manager, Global Marketing Solutions",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8160748"
+  },
+  "8160756": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "f6367f5063c661b4",
+   "location": "Arlington, VA",
+   "title": "Vice President & Chief Information Security Officer",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8160756"
+  },
+  "8160759": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "131dc295e2781758",
+   "location": "Denver, CO",
+   "title": "Senior Data Engineer",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8160759"
+  },
+  "8160762": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "3a4991ab11bf62e6",
+   "location": "Denver, CO",
+   "title": "Technical Program Manager, Solutions",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8160762"
+  },
+  "8161244": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "19e728101e26fa08",
+   "location": "Haarlem, Netherlands",
+   "title": "Customer Success Manager, Civil Government",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8161244"
+  },
+  "8161246": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "e73fdf6b9667e7dc",
+   "location": "London, United Kingdom",
+   "title": "Customer Success Manager, Civil Government",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8161246"
+  },
+  "8161277": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "d6d71ee2524d499d",
+   "location": "Haarlem, Netherlands",
+   "title": "Knowledge & AI Agent Manager",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8161277"
+  },
+  "8161287": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "a2ae378ecc6431fb",
+   "location": "Haarlem, Netherlands",
+   "title": "Senior Program Manager, Professional Services for Defense and Intelligence",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8161287"
+  },
+  "8161318": {
+   "first_seen": "2026-08-28T18:21:46+00:00",
+   "h": "f83c22c384608a49",
+   "location": "London, UK",
+   "title": "Senior Program Manager, Professional Services for Defense and Intelligence",
+   "url": "https://job-boards.greenhouse.io/planetlabs/jobs/8161318"
+  }
+ }
+}
