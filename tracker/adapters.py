@@ -1,6 +1,5 @@
 # tracker/adapters.py
 """Read-only adapters for public job boards used by the tracker."""
-
 from __future__ import annotations
 
 import json
@@ -109,10 +108,11 @@ def _workday_candidates(host: str, path: str, source_url: str | None) -> list[tu
     return candidates
 
 
-def fetch_workday(host: str, path: str, source_url: str | None = None) -> list[dict]:
+def fetch_workday(host: str, path: str, source_url: str | None = None, tenant: str | None = None) -> list[dict]:
     last_error = None
     for actual_host, actual_path in _workday_candidates(host, path, source_url):
-        endpoint = f"https://{actual_host}/wday/cxs/{actual_host.split('.', 1)[0]}/{actual_path}/jobs"
+        actual_tenant = tenant or actual_host.split('.', 1)[0]
+        endpoint = f"https://{actual_host}/wday/cxs/{actual_tenant}/{actual_path}/jobs"
         try:
             with _client() as client:
                 response = client.post(endpoint, json={"appliedFacets": {}, "limit": 100, "offset": 0, "searchText": ""})
@@ -123,10 +123,12 @@ def fetch_workday(host: str, path: str, source_url: str | None = None) -> list[d
             continue
         result = []
         for j in data.get("jobPostings", []):
-            title = j.get("title") or j.get("jobTitle") if isinstance(j, dict) else None
+            if not isinstance(j, dict):
+                continue
+            title = j.get("title") or j.get("jobTitle")
             if not title:
                 continue
-            external = (j.get("externalPath") or j.get("url") or "") if isinstance(j, dict) else ""
+            external = j.get("externalPath") or j.get("url") or ""
             if external.startswith("/"):
                 external = f"https://{actual_host}{external}"
             result.append({"id": j.get("jobPostingId") or external or title, "title": title, "location": j.get("locationsText") or j.get("location") or "", "url": external})
@@ -134,6 +136,47 @@ def fetch_workday(host: str, path: str, source_url: str | None = None) -> list[d
     if last_error:
         raise last_error
     return []
+
+
+def fetch_akerbp() -> list[dict]:
+    """Aker BP exposes its current jobs through a public Taleo-style HTML job list."""
+    url = "https://akerbp.com/en/career/"
+    with _client() as client:
+        response = client.get(url)
+        response.raise_for_status()
+        html = response.text
+    result = _jsonld_jobs(html, url)
+    # The career page has a server-rendered list of links even when JobPosting JSON-LD is absent.
+    for href, title in re.findall(r'href=["\']([^"\']*(?:/job/|/go/)[^"\']*)["\'][^>]*>(.*?)</a>', html, re.I | re.S):
+        clean = re.sub(r'<[^>]+>', ' ', title)
+        clean = re.sub(r'\s+', ' ', unescape(clean)).strip()
+        if not clean or len(clean) < 5:
+            continue
+        full = urljoin(url, href)
+        if any(x["url"] == full for x in result):
+            continue
+        result.append({"id": full, "title": clean, "location": "Norway", "url": full})
+    return result
+
+
+def fetch_mott() -> list[dict]:
+    """Mott MacDonald's public search page is server-rendered and does not expose JobPosting JSON-LD."""
+    url = "https://apply.mottmac.com/search/?q=graduate%2C+united+kingdom%2C+uk"
+    with _client() as client:
+        response = client.get(url)
+        response.raise_for_status()
+        html = response.text
+    result = _jsonld_jobs(html, url)
+    # Capture links from the search results. Location is inferred from the result row where available.
+    for href, title in re.findall(r'href=["\']([^"\']*(?:/job/|/go/)[^"\']*)["\'][^>]*>(.*?)</a>', html, re.I | re.S):
+        clean = re.sub(r'<[^>]+>', ' ', title)
+        clean = re.sub(r'\s+', ' ', unescape(clean)).strip()
+        if not clean or len(clean) < 5 or not re.search(r'(?i)graduate|junior|geotech|geolog|gis|environment|energy|engineer', clean):
+            continue
+        full = urljoin(url, href)
+        if not any(x["url"] == full for x in result):
+            result.append({"id": full, "title": clean, "location": "United Kingdom", "url": full})
+    return result
 
 
 def _jsonld_objects(html: str) -> list[dict]:
@@ -173,7 +216,7 @@ def fetch_career_page(url: str) -> list[dict]:
 
 
 def fetch_source(item: dict) -> list[dict]:
-    """Use the configured adapter, with known ATS migrations overriding stale config."""
+    """Use configured adapters, with explicit overrides for known ATS migrations."""
     key = item.get("name", "").lower()
     if "sylvera" in key:
         return fetch_ashby("sylvera")
@@ -196,7 +239,15 @@ def fetch_source(item: dict) -> list[dict]:
     if "reach subsea" in key:
         return fetch_career_page("https://www.reachsubsea.com/careers/")
     if "viridien" in key:
-        return fetch_workday("cgg.wd103.myworkdayjobs.com", "viridienfairs", item.get("url"))
+        return fetch_workday("cgg.wd103.myworkdayjobs.com", "viridienfairs", item.get("url"), tenant="cgg")
+    if key == "aker bp":
+        return fetch_akerbp()
+    if "dalcour maclaren" in key:
+        return fetch_workday("dalcourmaclaren.wd3.myworkdayjobs.com", "Dalcour-Maclaren-Careers", item.get("url"), tenant="dalcourmaclaren")
+    if key == "aecom":
+        return fetch_smartrecruiters("AECOM2")
+    if key == "mott macdonald":
+        return fetch_mott()
 
     adapter = item.get("adapter", "career_page")
     if adapter == "greenhouse":
@@ -210,7 +261,7 @@ def fetch_source(item: dict) -> list[dict]:
     if adapter == "smartrecruiters":
         return fetch_smartrecruiters(item["token"])
     if adapter == "workday":
-        return fetch_workday(item.get("host", ""), item.get("path", ""), item.get("url"))
+        return fetch_workday(item.get("host", ""), item.get("path", ""), item.get("url"), tenant=item.get("tenant"))
     if adapter == "career_page":
         return fetch_career_page(item["url"])
     raise ValueError(f"Unsupported adapter: {adapter}")
