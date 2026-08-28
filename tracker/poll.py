@@ -1,111 +1,64 @@
 # tracker/poll.py
-import re
-import httpx
+import argparse
+import sys
 import yaml
+from tracker.adapters import fetch_greenhouse
 from tracker.diff import diff, load_state, save_state
 from tracker.notify import alert_batch
 from tracker.render import render_dashboard
 
 
-def matches_rules(title: str, rules: dict) -> bool:
-  for inc in rules.get("include_title", []):
-    if re.search(inc, title):
-      for exc in rules.get("exclude_title", []):
-        if re.search(exc, title):
-          return False
-      return True
-  return False
-
-
-def fetch_greenhouse(token: str, rules: dict) -> list:
-  url = f"https://boards-api.greenhouse.io/v1/boards/{token}/jobs"
-  res = httpx.get(url, timeout=15)
-  if res.status_code != 200:
-    return []
-  out = []
-  for j in res.json().get("jobs", []):
-    title = j.get("title", "")
-    if matches_rules(title, rules):
-      loc = (j.get("location") or {}).get("name", "")
-      out.append({
-          "id": j.get("id"),
-          "title": title,
-          "location": loc,
-          "url": j.get("absolute_url"),
-      })
-  return out
-
-
-def fetch_lever(token: str, rules: dict) -> list:
-  url = f"https://api.lever.co/v0/postings/{token}?mode=json"
-  res = httpx.get(url, timeout=15)
-  if res.status_code != 200:
-    return []
-  out = []
-  for j in res.json():
-    title = j.get("text", "")
-    if matches_rules(title, rules):
-      loc = (j.get("categories") or {}).get("location", "")
-      out.append({
-          "id": j.get("id"),
-          "title": title,
-          "location": loc,
-          "url": j.get("hostedUrl"),
-      })
-  return out
-
-
-def fetch_smartrecruiters(token: str, rules: dict) -> list:
-  url = f"https://api.smartrecruiters.com/v1/companies/{token}/postings"
-  res = httpx.get(url, timeout=15)
-  if res.status_code != 200:
-    return []
-  out = []
-  for j in res.json().get("content", []):
-    title = j.get("name", "")
-    if matches_rules(title, rules):
-      loc = (j.get("location") or {}).get("city", "")
-      out.append({
-          "id": j.get("id"),
-          "title": title,
-          "location": loc,
-          "url": f"https://jobs.smartrecruiters.com/{token}/{j.get('id')}",
-      })
-  return out
-
-
-def main():
-  with open("config/sources.yaml", "r") as f:
-    sources = yaml.safe_load(f) or {}
-  with open("config/rules.yaml", "r") as f:
-    rules = yaml.safe_load(f) or {}
-
-  state = load_state()
-
-  for src_key, meta in sources.items():
-    adapter = meta.get("adapter")
-    token = meta.get("token")
-    fetched = []
-
+def run_poll(tiers: list):
     try:
-      if adapter == "greenhouse" and token:
-        fetched = fetch_greenhouse(token, rules)
-      elif adapter == "lever" and token:
-        fetched = fetch_lever(token, rules)
-      elif adapter == "smartrecruiters" and token:
-        fetched = fetch_smartrecruiters(token, rules)
-    except Exception as e:
-      print(f"Error polling {src_key}: {e}")
-      continue
+        with open("config/sources.yaml", "r") as f:
+            sources = yaml.safe_load(f) or {}
+    except FileNotFoundError:
+        print("Warning: config/sources.yaml not found. Creating empty config.")
+        sources = {}
 
-    if fetched:
-      new_jobs, reopened = diff(src_key, fetched, state)
-      if new_jobs:
-        alert_batch(meta.get("name", src_key), new_jobs)
+    state = load_state()
 
-  save_state(state)
-  render_dashboard(state, sources)
+    # Tier 1 & 2: Public ATS Endpoints (e.g., Greenhouse)
+    if "1" in tiers or "2" in tiers:
+        greenhouse_boards = sources.get("greenhouse", [])
+        for item in greenhouse_boards:
+            company = item.get("name")
+            token = item.get("token")
+            if not company or not token:
+                continue
+
+            print(f"Polling {company} (Greenhouse)...")
+            try:
+                jobs = fetch_greenhouse(token)
+                new_jobs, reopened_jobs, _ = diff(company, jobs, state)
+
+                # Send email notifications for newly detected postings
+                if new_jobs:
+                    print(f"-> Found {len(new_jobs)} new roles for {company}")
+                    alert_batch(company, new_jobs, priority=1)
+                
+                if reopened_jobs:
+                    print(f"-> Found {len(reopened_jobs)} reopened roles for {company}")
+                    alert_batch(company, reopened_jobs, priority=2)
+
+            except Exception as exc:
+                print(f"Error while polling {company}: {exc}")
+
+    # Persist updated state to data/state.json and rebuild docs/jobs.json
+    save_state(state)
+    render_dashboard(state)
+    print("Poll run completed successfully.")
 
 
 if __name__ == "__main__":
-  main()
+    parser = argparse.ArgumentParser(description="Poll ATS feeds for new job postings")
+    parser.add_argument(
+        "--tier",
+        type=str,
+        default="1,2",
+        help="Comma-separated tiers to run (e.g., --tier 1,2 or --tier 3)",
+    )
+    args = parser.parse_args()
+
+    selected_tiers = [t.strip() for t in args.tier.split(",")]
+    run_poll(selected_tiers)

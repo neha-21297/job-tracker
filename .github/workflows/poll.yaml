@@ -1,15 +1,16 @@
+# .github/workflows/poll.yml
 name: poll
 
 on:
   schedule:
-    - cron: "*/10 6-20 * * 1-5"
-    - cron: "0 */3 * * *"
-  workflow_dispatch:
-  repository_dispatch:
+    - cron: "*/10 6-20 * * 1-5"      # every 10 min, weekday business hours UTC
+    - cron: "0 */3 * * *"            # 3-hourly otherwise
+  workflow_dispatch:                 # manual "check now" button
+  repository_dispatch:               # external cron can fire this
 
 concurrency:
   group: poll
-  cancel-in-progress: false
+  cancel-in-progress: false          # never let two runs race the git push
 
 permissions:
   contents: write
@@ -54,5 +55,10 @@ jobs:
           git add -A data docs
           if ! git diff --staged --quiet; then
             git commit -m "poll: $(date -u +%FT%TZ)"
-            git push origin HEAD:${{ github.ref_name }}
+            git pull --rebase origin ${{ github.ref_name }}
+            git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:${{ github.ref_name }}
           fi
+
+      - name: Heartbeat
+        if: success()
+        run: curl -fsS -m 10 "${{ secrets.HEALTHCHECK_URL }}" || true
