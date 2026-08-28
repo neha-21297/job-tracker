@@ -28,23 +28,37 @@ def render_dashboard(state: dict, sources: dict) -> None:
                 "url": rec.get("url", ""),
                 "status": "Open",
                 "opening": "",
+                "source_type": "live",
             })
 
     future = []
     for key, rec in _load_future_openings().items():
         if not isinstance(rec, dict):
             continue
-        future.append({
+        item = {
             "company": rec.get("company", key),
-            "programme": rec.get("programme", "Graduate programme"),
-            "opening": rec.get("opening", ""),
-            "status": rec.get("status", "Expected to open"),
+            "title": rec.get("programme", "Graduate programme"),
+            "location": rec.get("location", "UK"),
+            "first_seen": "",
             "url": rec.get("url", ""),
+            "status": rec.get("status", "Expected to open"),
+            "opening": rec.get("opening", ""),
+            "source_type": "future",
             "source": rec.get("source", ""),
+        }
+        future.append({
+            "company": item["company"],
+            "programme": item["title"],
+            "opening": item["opening"],
+            "status": item["status"],
+            "url": item["url"],
+            "source": item["source"],
         })
+        # Put future programmes into the same feed as live roles so the existing
+        # dashboard can display them without a second data source.
+        rows.append(item)
 
-    rows.sort(key=lambda r: r["first_seen"], reverse=True)
-    future.sort(key=lambda r: r["opening"])
+    rows.sort(key=lambda r: (r.get("source_type") != "future", r.get("opening", ""), r.get("first_seen", "")), reverse=False)
 
     out = pathlib.Path("docs/jobs.json")
     out.parent.mkdir(parents=True, exist_ok=True)
