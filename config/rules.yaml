@@ -8,5 +8,8 @@ exclude_title:
   - '(?i)\b(senior|lead|principal|director|head[\s-]of|manager|staff|vp|chief)\b'
   - '(?i)\b(apprenticeship|apprentice|school[\s-]leaver|executive[\s-]assistant)\b'
 
+# UK only. Deliberately do not include a bare "remote": a US/global remote
+# vacancy is not automatically a UK vacancy.
 locations:
-  - '(?i)\b(uk|united[\s-]kingdom|london|scotland|aberdeen|edinburgh|bristol|oxford|cambridge|remote|hybrid)\b'
+  - '(?i)\b(uk|u\.k\.|united[\s-]kingdom|england|scotland|wales|northern[\s-]ireland)\b'
+  - '(?i)\b(london|aberdeen|belfast|birmingham|bournemouth|brighton|bristol|cambridge|cardiff|coventry|derby|edinburgh|exeter|glasgow|leeds|liverpool|manchester|milton[\s-]keynes|newcastle|norwich|nottingham|oxford|reading|sheffield|southampton|york)\b'
