@@ -36,7 +36,7 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Ensure data and docs directories exist
-        run: mkdir -p data docs config[cite: 1, 2]
+        run: mkdir -p data docs config
 
       - name: Run poll script
         run: python -m tracker.poll --tier 1,2
@@ -58,4 +58,4 @@ jobs:
 
       - name: Heartbeat
         if: success()
-        run: curl -fsS -m 10 "${{ secrets.HEALTHCHECK_URL }}" || true[cite: 1, 2]
+        run: curl -fsS -m 10 "${{ secrets.HEALTHCHECK_URL }}" || true
