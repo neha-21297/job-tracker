@@ -49,6 +49,8 @@ def run_poll(tiers: list[str]):
     sources = _load_yaml("config/sources.yaml")
     rules = _load_rules()
     state = load_state()
+    failures = []
+    empty_sources = []
 
     for source_key, item in sources.items():
         if not isinstance(item, dict):
@@ -67,6 +69,10 @@ def run_poll(tiers: list[str]):
 
         try:
             fetched = fetch_source(item)
+            if not fetched:
+                empty_sources.append(str(company))
+                print("-> WARNING: source returned 0 jobs; this is not treated as proof that the company has no vacancies")
+
             jobs = [job for job in fetched if _is_relevant_job(job, rules, source_for_filter)]
             print(f"-> {len(fetched)} fetched, {len(jobs)} relevant roles")
 
@@ -81,11 +87,22 @@ def run_poll(tiers: list[str]):
                 alert_batch(company, reopened_jobs, priority=2)
 
         except Exception as exc:
+            failures.append((str(company), str(exc)))
             print(f"Error while polling {company}: {exc}")
 
     save_state(state)
     render_dashboard(state, sources)
-    print("Poll run completed successfully.")
+
+    print("Poll run completed.")
+    if failures:
+        print(f"Source failures: {len(failures)}")
+        for company, error in failures:
+            print(f"  - {company}: {error}")
+    if empty_sources:
+        print(f"Empty sources needing review: {len(empty_sources)}")
+        print("  - " + ", ".join(empty_sources))
+    if not failures and not empty_sources:
+        print("All configured sources returned data successfully.")
 
 
 if __name__ == "__main__":
