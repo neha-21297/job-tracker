@@ -1,0 +1,29 @@
+# Announced future openings. These are kept separately from live vacancies so
+# a company can appear on the dashboard even when its application portal is closed.
+# Use the wording published by the employer where no exact date is available.
+
+atkinsrealis:
+  company: "AtkinsRéalis"
+  programme: "UK Graduate Programmes"
+  opening: "Autumn 2026"
+  status: "Expected to reopen"
+  url: "https://careers.atkinsrealis.com/en/early-careers/uk/graduates"
+  source: "Employer careers page"
+
+mott_macdonald:
+  company: "Mott MacDonald"
+  programme: "UK 2027 graduate, placement and apprentice opportunities"
+  opening: "Autumn 2026 (from late September)"
+  status: "Expected to open"
+  url: "https://www.mottmac.com/en-us/careers/early-careers/uk-europe/"
+  source: "Employer careers page"
+
+# AECOM currently advertises individual UK graduate vacancies rather than one
+# single reopening date. Keep the programme-level entry as a watch item.
+aecom:
+  company: "AECOM"
+  programme: "UK & Ireland Graduate Development Programme"
+  opening: "Monitor individual vacancies"
+  status: "Programme operates through individual vacancies"
+  url: "https://aecom.com/uk-ireland-graduate-careers-archive/uk-ireland-gdp-application-assessment/"
+  source: "Employer careers information"
