@@ -9,7 +9,11 @@ from urllib.parse import urljoin
 
 import httpx
 
-HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; JobTracker/1.0; +https://github.com/neha-21297/job-tracker)"}
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (compatible; JobTracker/1.0; +https://github.com/neha-21297/job-tracker)",
+    "Accept": "application/json, text/html;q=0.9, */*;q=0.8",
+    "Accept-Language": "en-GB,en;q=0.9",
+}
 
 
 def _client() -> httpx.Client:
@@ -54,7 +58,7 @@ def fetch_workable(slug: str) -> list[dict]:
     result = _jsonld_jobs(html, url)
     for m in re.finditer(r'"(?:title|name)"\s*:\s*"([^"]+)"[^{}]{0,1600}?"(?:url|shortlink)"\s*:\s*"([^"]+)"', html, re.I | re.S):
         title, job_url = m.groups()
-        if "/j/" in job_url and not any(x["url"] == job_url for x in result):
+        if "/j/" in job_url and not any(x["url"] == urljoin(url, job_url) for x in result):
             result.append({"id": job_url, "title": unescape(title), "location": "", "url": urljoin(url, job_url)})
     return result
 
@@ -85,7 +89,9 @@ def fetch_smartrecruiters(company: str) -> list[dict]:
             for j in rows:
                 loc = j.get("location") or {}
                 location = ", ".join(str(x) for x in (loc.get("city"), loc.get("region"), loc.get("country")) if x)
-                result.append({"id": j.get("id") or j.get("refNumber"), "title": j.get("name", ""), "location": location, "url": j.get("ref", "") or j.get("applyUrl", "")})
+                job_id = j.get("id") or j.get("refNumber")
+                public_url = j.get("applyUrl") or (f"https://jobs.smartrecruiters.com/{company}/{job_id}" if job_id else "")
+                result.append({"id": job_id, "title": j.get("name", ""), "location": location, "url": public_url})
             if not rows or len(result) >= int(payload.get("totalFound", len(result))):
                 break
             offset += len(rows)
@@ -98,7 +104,9 @@ def _workday_candidates(host: str, path: str, source_url: str | None) -> list[tu
         return candidates
     try:
         with _client() as client:
-            html = client.get(source_url).text
+            response = client.get(source_url)
+            response.raise_for_status()
+            html = response.text
     except Exception:
         return candidates
     for h, p in re.findall(r'https?://([A-Za-z0-9.-]+\.myworkdayjobs\.com)/(?:[^"\'<> ]*/)?([A-Za-z0-9_-]+)', html, re.I):
@@ -108,74 +116,89 @@ def _workday_candidates(host: str, path: str, source_url: str | None) -> list[tu
     return candidates
 
 
+def _workday_site_url(host: str, site: str, source_url: str | None) -> str:
+    if source_url and "myworkdayjobs.com" in source_url:
+        m = re.search(r"myworkdayjobs\.com/([^/]+)/" + re.escape(site) + r"(?:/|$)", source_url, re.I)
+        if m:
+            return f"https://{host}/{m.group(1)}/{site}"
+    return f"https://{host}/{site}"
+
+
 def fetch_workday(host: str, path: str, source_url: str | None = None, tenant: str | None = None) -> list[dict]:
+    """Fetch Workday CXS jobs. Workday's public endpoint has a 20-row page limit."""
     last_error = None
     for actual_host, actual_path in _workday_candidates(host, path, source_url):
         actual_tenant = tenant or actual_host.split('.', 1)[0]
         endpoint = f"https://{actual_host}/wday/cxs/{actual_tenant}/{actual_path}/jobs"
+        result, offset, total = [], 0, None
         try:
             with _client() as client:
-                response = client.post(endpoint, json={"appliedFacets": {}, "limit": 100, "offset": 0, "searchText": ""})
-                response.raise_for_status()
-                data = response.json()
+                while True:
+                    response = client.post(
+                        endpoint,
+                        headers={"Content-Type": "application/json", "Accept": "application/json"},
+                        json={"appliedFacets": {}, "limit": 20, "offset": offset, "searchText": ""},
+                    )
+                    response.raise_for_status()
+                    data = response.json()
+                    if total is None:
+                        total = int(data.get("total") or 0)
+                    postings = data.get("jobPostings", [])
+                    for j in postings:
+                        if not isinstance(j, dict):
+                            continue
+                        title = j.get("title") or j.get("jobTitle")
+                        if not title:
+                            continue
+                        external = j.get("externalPath") or j.get("url") or ""
+                        if external.startswith("/"):
+                            external = _workday_site_url(actual_host, actual_path, source_url) + external
+                        result.append({"id": j.get("jobPostingId") or j.get("externalPath") or external or title,
+                                       "title": title,
+                                       "location": j.get("locationsText") or j.get("location") or "",
+                                       "url": external})
+                    if not postings or (total and offset + len(postings) >= total) or len(postings) < 20:
+                        break
+                    offset += len(postings)
+            return result
         except Exception as exc:
             last_error = exc
-            continue
-        result = []
-        for j in data.get("jobPostings", []):
-            if not isinstance(j, dict):
-                continue
-            title = j.get("title") or j.get("jobTitle")
-            if not title:
-                continue
-            external = j.get("externalPath") or j.get("url") or ""
-            if external.startswith("/"):
-                external = f"https://{actual_host}{external}"
-            result.append({"id": j.get("jobPostingId") or external or title, "title": title, "location": j.get("locationsText") or j.get("location") or "", "url": external})
-        return result
     if last_error:
         raise last_error
     return []
 
 
 def fetch_akerbp() -> list[dict]:
-    """Aker BP exposes its current jobs through a public Taleo-style HTML job list."""
     url = "https://akerbp.com/en/career/"
     with _client() as client:
         response = client.get(url)
         response.raise_for_status()
         html = response.text
     result = _jsonld_jobs(html, url)
-    # The career page has a server-rendered list of links even when JobPosting JSON-LD is absent.
     for href, title in re.findall(r'href=["\']([^"\']*(?:/job/|/go/)[^"\']*)["\'][^>]*>(.*?)</a>', html, re.I | re.S):
         clean = re.sub(r'<[^>]+>', ' ', title)
         clean = re.sub(r'\s+', ' ', unescape(clean)).strip()
-        if not clean or len(clean) < 5:
-            continue
-        full = urljoin(url, href)
-        if any(x["url"] == full for x in result):
-            continue
-        result.append({"id": full, "title": clean, "location": "Norway", "url": full})
+        if clean and len(clean) >= 5:
+            full = urljoin(url, href)
+            if not any(x["url"] == full for x in result):
+                result.append({"id": full, "title": clean, "location": "Norway", "url": full})
     return result
 
 
 def fetch_mott() -> list[dict]:
-    """Mott MacDonald's public search page is server-rendered and does not expose JobPosting JSON-LD."""
     url = "https://apply.mottmac.com/search/?q=graduate%2C+united+kingdom%2C+uk"
     with _client() as client:
         response = client.get(url)
         response.raise_for_status()
         html = response.text
     result = _jsonld_jobs(html, url)
-    # Capture links from the search results. Location is inferred from the result row where available.
     for href, title in re.findall(r'href=["\']([^"\']*(?:/job/|/go/)[^"\']*)["\'][^>]*>(.*?)</a>', html, re.I | re.S):
         clean = re.sub(r'<[^>]+>', ' ', title)
         clean = re.sub(r'\s+', ' ', unescape(clean)).strip()
-        if not clean or len(clean) < 5 or not re.search(r'(?i)graduate|junior|geotech|geolog|gis|environment|energy|engineer', clean):
-            continue
-        full = urljoin(url, href)
-        if not any(x["url"] == full for x in result):
-            result.append({"id": full, "title": clean, "location": "United Kingdom", "url": full})
+        if clean and len(clean) >= 5 and re.search(r'(?i)graduate|junior|geotech|geolog|gis|environment|energy|engineer', clean):
+            full = urljoin(url, href)
+            if not any(x["url"] == full for x in result):
+                result.append({"id": full, "title": clean, "location": "United Kingdom", "url": full})
     return result
 
 
@@ -208,11 +231,49 @@ def _jsonld_jobs(html: str, base_url: str) -> list[dict]:
     return result
 
 
+def _career_link_jobs(html: str, base_url: str) -> list[dict]:
+    """Fallback for server-rendered career portals without JobPosting JSON-LD."""
+    result = []
+    for href, title in re.findall(r'<a\b[^>]*href=["\']([^"\']+)["\'][^>]*>(.*?)</a>', html, re.I | re.S):
+        clean = re.sub(r'<[^>]+>', ' ', title)
+        clean = re.sub(r'\s+', ' ', unescape(clean)).strip()
+        if len(clean) < 5 or len(clean) > 180:
+            continue
+        full = urljoin(base_url, unescape(href))
+        path = full.lower()
+        if not re.search(r'/(?:job|jobs|vacan|position|opening|opportunit|career)/', path):
+            continue
+        if re.search(r'/(?:search|filter|category|department|location|login|register|apply(?:-now)?)(?:[/?#]|$)', path):
+            continue
+        if not any(x["url"] == full for x in result):
+            result.append({"id": full, "title": clean, "location": "", "url": full})
+    return result
+
+
+def _embedded_jobs(html: str, base_url: str) -> list[dict]:
+    result = []
+    for title, job_url in re.findall(r'"job_posting_title"\s*:\s*"((?:\\.|[^"\\])+)".*?"external_posting_url"\s*:\s*"((?:\\.|[^"\\])+)"', html, re.I | re.S):
+        try:
+            title, job_url = json.loads('"' + title + '"'), json.loads('"' + job_url + '"')
+        except json.JSONDecodeError:
+            title, job_url = unescape(title), unescape(job_url)
+        if title and job_url:
+            full = urljoin(base_url, job_url)
+            if not any(x["url"] == full for x in result):
+                result.append({"id": full, "title": title, "location": "", "url": full})
+    return result
+
+
 def fetch_career_page(url: str) -> list[dict]:
     with _client() as client:
         response = client.get(url)
         response.raise_for_status()
-        return _jsonld_jobs(response.text, url)
+        html = response.text
+    result = _jsonld_jobs(html, url)
+    for job in _embedded_jobs(html, url) + _career_link_jobs(html, url):
+        if not any(x["url"] == job["url"] for x in result):
+            result.append(job)
+    return result
 
 
 def fetch_source(item: dict) -> list[dict]:
@@ -239,7 +300,7 @@ def fetch_source(item: dict) -> list[dict]:
     if "reach subsea" in key:
         return fetch_career_page("https://www.reachsubsea.com/careers/")
     if "viridien" in key:
-        return fetch_workday("cgg.wd103.myworkdayjobs.com", "viridienfairs", item.get("url"), tenant="cgg")
+        return fetch_workday("cgg.wd103.myworkdayjobs.com", "viridiencareers", item.get("url"), tenant="cgg")
     if key == "aker bp":
         return fetch_akerbp()
     if "dalcour maclaren" in key:
