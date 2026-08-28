@@ -12,22 +12,25 @@ from tracker.notify import alert_batch
 from tracker.render import render_dashboard
 
 
-def _load_rules() -> dict:
+def _load_yaml(path: str) -> dict:
     try:
-        with open("config/rules.yaml", "r", encoding="utf-8") as f:
+        with open(path, "r", encoding="utf-8") as f:
             return yaml.safe_load(f) or {}
     except FileNotFoundError:
         return {}
+
+
+def _load_rules() -> dict:
+    return _load_yaml("config/rules.yaml")
 
 
 def _matches_any(patterns: list[str], value: str) -> bool:
     return any(re.search(pattern, value or "") for pattern in patterns)
 
 
-def _is_relevant_job(job: dict, rules: dict) -> bool:
+def _is_relevant_job(job: dict, rules: dict, source: dict) -> bool:
     title = str(job.get("title", ""))
     location = str(job.get("location", ""))
-
     include_title = rules.get("include_title", [])
     exclude_title = rules.get("exclude_title", [])
     uk_locations = rules.get("locations", [])
@@ -36,19 +39,14 @@ def _is_relevant_job(job: dict, rules: dict) -> bool:
         return False
     if include_title and not _matches_any(include_title, title):
         return False
-    if uk_locations and not _matches_any(uk_locations, location):
+    allow_non_uk = bool(source.get("allow_non_uk"))
+    if not allow_non_uk and uk_locations and not _matches_any(uk_locations, location):
         return False
     return True
 
 
 def run_poll(tiers: list[str]):
-    try:
-        with open("config/sources.yaml", "r", encoding="utf-8") as f:
-            sources = yaml.safe_load(f) or {}
-    except FileNotFoundError:
-        print("Warning: config/sources.yaml not found. Creating empty config.")
-        sources = {}
-
+    sources = _load_yaml("config/sources.yaml")
     rules = _load_rules()
     state = load_state()
 
@@ -61,12 +59,16 @@ def run_poll(tiers: list[str]):
 
         company = item.get("name", source_key)
         adapter = item.get("adapter", "career_page")
+        source_for_filter = dict(item)
+        if str(company).lower() == "aker bp":
+            source_for_filter["allow_non_uk"] = True
+
         print(f"Polling {company} ({adapter}, tier {tier})...")
 
         try:
             fetched = fetch_source(item)
-            jobs = [job for job in fetched if _is_relevant_job(job, rules)]
-            print(f"-> {len(fetched)} fetched, {len(jobs)} relevant UK roles")
+            jobs = [job for job in fetched if _is_relevant_job(job, rules, source_for_filter)]
+            print(f"-> {len(fetched)} fetched, {len(jobs)} relevant roles")
 
             result = diff(source_key, jobs, state)
             new_jobs, reopened_jobs = result[0], result[1]
