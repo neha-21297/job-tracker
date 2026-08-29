@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import re
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import yaml
 
@@ -45,6 +46,17 @@ def _is_relevant_job(job: dict, rules: dict, source: dict) -> bool:
     return True
 
 
+def _fetch_one(source_key: str, item: dict) -> tuple[str, str, dict, list[dict] | None, str | None]:
+    """Fetch one source in a worker so slow/blocked sites do not serialize the run."""
+    company = str(item.get("name", source_key))
+    adapter = str(item.get("adapter", "career_page"))
+    try:
+        fetched = fetch_source(item)
+        return source_key, company, item, fetched, None
+    except Exception as exc:
+        return source_key, company, item, None, str(exc)
+
+
 def run_poll(tiers: list[str]):
     sources = _load_yaml("config/sources.yaml")
     rules = _load_rules()
@@ -52,43 +64,69 @@ def run_poll(tiers: list[str]):
     failures = []
     empty_sources = []
 
+    selected = []
     for source_key, item in sources.items():
         if not isinstance(item, dict):
             continue
         tier = str(item.get("tier", ""))
-        if tier not in tiers:
+        if tier in tiers:
+            selected.append((source_key, item))
+
+    # Fetch sources concurrently. The old implementation fetched every company
+    # serially, so a handful of slow/blocked career pages could consume the
+    # entire GitHub Actions timeout before the later companies were reached.
+    max_workers = min(8, max(1, len(selected)))
+    print(f"Fetching {len(selected)} sources with {max_workers} concurrent workers...")
+
+    fetched_results = {}
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        futures = {
+            executor.submit(_fetch_one, source_key, item): source_key
+            for source_key, item in selected
+        }
+        for future in as_completed(futures):
+            source_key = futures[future]
+            fetched_results[source_key] = future.result()
+
+    # Process in config order so logs remain easy to read and state updates are
+    # still performed serially.
+    for source_key, item in selected:
+        company = str(item.get("name", source_key))
+        adapter = str(item.get("adapter", "career_page"))
+        _, _, _, fetched, error = fetched_results[source_key]
+
+        print(f"Polling {company} ({adapter}, tier {item.get('tier', '')})...")
+
+        if error is not None:
+            failures.append((company, error))
+            print(f"Error while polling {company}: {error}")
             continue
 
-        company = item.get("name", source_key)
-        adapter = item.get("adapter", "career_page")
+        if fetched is None:
+            failures.append((company, "source returned no result"))
+            print(f"Error while polling {company}: source returned no result")
+            continue
+
+        if not fetched:
+            empty_sources.append(company)
+            print("-> WARNING: source returned 0 jobs; this is not treated as proof that the company has no vacancies")
+
         source_for_filter = dict(item)
-        if str(company).lower() == "aker bp":
+        if company.lower() == "aker bp":
             source_for_filter["allow_non_uk"] = True
 
-        print(f"Polling {company} ({adapter}, tier {tier})...")
+        jobs = [job for job in fetched if _is_relevant_job(job, rules, source_for_filter)]
+        print(f"-> {len(fetched)} fetched, {len(jobs)} relevant roles")
 
-        try:
-            fetched = fetch_source(item)
-            if not fetched:
-                empty_sources.append(str(company))
-                print("-> WARNING: source returned 0 jobs; this is not treated as proof that the company has no vacancies")
+        result = diff(source_key, jobs, state)
+        new_jobs, reopened_jobs = result[0], result[1]
 
-            jobs = [job for job in fetched if _is_relevant_job(job, rules, source_for_filter)]
-            print(f"-> {len(fetched)} fetched, {len(jobs)} relevant roles")
-
-            result = diff(source_key, jobs, state)
-            new_jobs, reopened_jobs = result[0], result[1]
-
-            if new_jobs:
-                print(f"-> Found {len(new_jobs)} new roles for {company}")
-                alert_batch(company, new_jobs, priority=1)
-            if reopened_jobs:
-                print(f"-> Found {len(reopened_jobs)} reopened roles for {company}")
-                alert_batch(company, reopened_jobs, priority=2)
-
-        except Exception as exc:
-            failures.append((str(company), str(exc)))
-            print(f"Error while polling {company}: {exc}")
+        if new_jobs:
+            print(f"-> Found {len(new_jobs)} new roles for {company}")
+            alert_batch(company, new_jobs, priority=1)
+        if reopened_jobs:
+            print(f"-> Found {len(reopened_jobs)} reopened roles for {company}")
+            alert_batch(company, reopened_jobs, priority=2)
 
     save_state(state)
     render_dashboard(state, sources)
