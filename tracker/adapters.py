@@ -1,9 +1,10 @@
 # tracker/adapters.py
 """Adapters for public job boards and career pages.
 
-The tracker deliberately prefers structured ATS APIs.  For companies whose
+The tracker deliberately prefers structured ATS APIs. For companies whose
 career page is only a JavaScript shell (or blocks plain HTTP clients), a
-Playwright fallback renders the page and then reuses the same HTML parsers.
+Playwright fallback renders the page, follows embedded frames, observes
+job-search API responses, and then reuses the same HTML parsers.
 """
 from __future__ import annotations
 
@@ -43,7 +44,7 @@ def _normalise_location(value) -> str:
     if isinstance(value, str):
         return value
     if isinstance(value, dict):
-        bits = [value.get(k) for k in ("addressLocality", "addressRegion", "addressCountry")]
+        bits = [value.get(k) for k in ("addressLocality", "addressRegion", "addressCountry", "city", "state", "country")]
         return ", ".join(str(x) for x in bits if x)
     if isinstance(value, list):
         return "; ".join(_normalise_location(x) for x in value if x)
@@ -341,6 +342,59 @@ def _career_link_jobs(html: str, base_url: str) -> list[dict]:
     return result
 
 
+def _generic_json_jobs(value, base_url: str, result: list[dict], depth: int = 0) -> None:
+    """Extract job-shaped records from arbitrary JSON returned by career APIs."""
+    if depth > 7:
+        return
+    if isinstance(value, list):
+        for item in value:
+            _generic_json_jobs(item, base_url, result, depth + 1)
+        return
+    if not isinstance(value, dict):
+        return
+
+    title = None
+    for key in ("title", "jobTitle", "name", "positionTitle", "job_title", "postingTitle"):
+        candidate = value.get(key)
+        if isinstance(candidate, str) and 3 <= len(candidate.strip()) <= 220:
+            title = candidate.strip()
+            break
+
+    url = ""
+    for key in ("url", "jobUrl", "jobURL", "applyUrl", "applyURL", "externalPath", "jobDetailUrl", "detailUrl", "link"):
+        candidate = value.get(key)
+        if isinstance(candidate, str) and candidate:
+            url = urljoin(base_url, candidate)
+            break
+
+    location = ""
+    for key in ("location", "locations", "locationsText", "jobLocation", "city", "address", "workLocation"):
+        if value.get(key):
+            location = _normalise_location(value.get(key))
+            if location:
+                break
+
+    if title and (url or location):
+        job_id = value.get("id") or value.get("jobId") or value.get("jobPostingId") or url or title
+        record = {"id": str(job_id), "title": title, "location": location, "url": url or base_url}
+        if not any(x["id"] == record["id"] or (x["url"] and x["url"] == record["url"]) for x in result):
+            result.append(record)
+
+    for child in value.values():
+        if isinstance(child, (dict, list)):
+            _generic_json_jobs(child, base_url, result, depth + 1)
+
+
+def _parse_api_json(text: str, base_url: str) -> list[dict]:
+    try:
+        payload = json.loads(text)
+    except (TypeError, json.JSONDecodeError):
+        return []
+    result: list[dict] = []
+    _generic_json_jobs(payload, base_url, result)
+    return result
+
+
 def _discover_ats(html: str) -> list[tuple[str, str]]:
     found: list[tuple[str, str]] = []
 
@@ -356,10 +410,14 @@ def _discover_ats(html: str) -> list[tuple[str, str]]:
         ("lever", r'https?://(?:api\.lever\.co/v0/postings/|jobs\.lever\.co/)([A-Za-z0-9_-]+)'),
         ("smartrecruiters", r'https?://(?:api\.smartrecruiters\.com/v1/companies/|jobs\.smartrecruiters\.com/)([A-Za-z0-9_-]+)'),
         ("workable", r'https?://apply\.workable\.com/([A-Za-z0-9_-]+)'),
+        ("workday", r'https?://([A-Za-z0-9.-]+\.myworkdayjobs\.com)/[^"\'<> ]+'),
     ]
     for adapter, pattern in patterns:
         for value in re.findall(pattern, html, re.I):
-            add(adapter, value)
+            if adapter == "workday":
+                add(adapter, value if isinstance(value, str) else value[0])
+            else:
+                add(adapter, value)
     return found
 
 
@@ -389,12 +447,24 @@ def _fetch_ats_from_html(html: str) -> list[dict]:
     return []
 
 
-def _fetch_with_browser(url: str) -> list[dict]:
-    """Render a career page with Chromium and parse the resulting DOM.
+def _candidate_links_from_html(html: str, base_url: str) -> list[str]:
+    links = []
+    for href, text in re.findall(
+        r'<a\b[^>]*href=["\']([^"\']+)["\'][^>]*>(.*?)</a>',
+        html,
+        re.I | re.S,
+    ):
+        label = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", unescape(text))).strip()
+        full = urljoin(base_url, unescape(href))
+        haystack = (label + " " + full).lower()
+        if re.search(r"career|vacan|job|work-with-us|join-us|opportunit|position", haystack):
+            if full not in links:
+                links.append(full)
+    return links
 
-    Browser fallback is deliberately bounded: one blocked company should not
-    hold up the entire poll run.
-    """
+
+def _fetch_with_browser(url: str) -> list[dict]:
+    """Render a career page and inspect DOM, frames, and job-search API calls."""
     try:
         from playwright.sync_api import sync_playwright
     except ImportError:
@@ -409,38 +479,65 @@ def _fetch_with_browser(url: str) -> list[dict]:
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         try:
-            for candidate in candidates[:4]:
+            for candidate in candidates[:6]:
                 if candidate in seen:
                     continue
                 seen.add(candidate)
                 page = None
+                api_jobs: list[dict] = []
+                response_urls: list[str] = []
                 try:
-                    page = browser.new_page(
-                        user_agent=HEADERS["User-Agent"],
-                        locale="en-GB",
-                    )
+                    page = browser.new_page(user_agent=HEADERS["User-Agent"], locale="en-GB")
+
+                    def on_response(response):
+                        try:
+                            req_url = response.url
+                            content_type = (response.headers.get("content-type") or "").lower()
+                            if "json" not in content_type and not re.search(r"(?:/api/|graphql|jobs?|vacanc|posting|search)", req_url, re.I):
+                                return
+                            if len(response_urls) >= 40 or req_url in response_urls:
+                                return
+                            response_urls.append(req_url)
+                            body = response.body()
+                            if len(body) <= 2_000_000:
+                                api_jobs.extend(_parse_api_json(body.decode("utf-8", "ignore"), req_url))
+                        except Exception:
+                            pass
+
+                    page.on("response", on_response)
                     response = page.goto(candidate, wait_until="domcontentloaded", timeout=15000)
-                    page.wait_for_timeout(800)
+                    page.wait_for_timeout(1800)
                     html = page.content()
-                    status = response.status if response else 0
+
                     jobs = _parse_html_jobs(html, candidate)
                     if not jobs:
                         jobs = _fetch_ats_from_html(html)
+                    if api_jobs:
+                        for job in api_jobs:
+                            if not any(x["id"] == job["id"] or (x["url"] and x["url"] == job["url"]) for x in jobs):
+                                jobs.append(job)
                     if jobs:
                         return jobs
 
-                    if candidate.endswith("/") and status and status < 400:
-                        links = []
-                        for href, text in re.findall(
-                            r'<a\b[^>]*href=["\']([^"\']+)["\'][^>]*>(.*?)</a>',
-                            html,
-                            re.I | re.S,
-                        ):
-                            label = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", unescape(text))).strip()
-                            full = urljoin(candidate, unescape(href))
-                            if re.search(r"career|vacanc|job|work-with-us|join-us", (label + " " + full).lower()):
-                                links.append(full)
-                        for link in links[:2]:
+                    # Embedded ATS/job boards are frequently placed in iframes.
+                    for frame in page.frames:
+                        if frame == page.main_frame:
+                            continue
+                        try:
+                            frame_html = frame.content()
+                            frame_url = frame.url or candidate
+                            frame_jobs = _parse_html_jobs(frame_html, frame_url)
+                            if not frame_jobs:
+                                frame_jobs = _fetch_ats_from_html(frame_html)
+                            if frame_jobs:
+                                return frame_jobs
+                        except Exception:
+                            continue
+
+                    # If the landing page is just a shell, follow a small set of
+                    # plausible career/job links rather than only the first two.
+                    if response and response.status < 400:
+                        for link in _candidate_links_from_html(html, candidate)[:5]:
                             if link not in seen:
                                 candidates.append(link)
                 except Exception:
