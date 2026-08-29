@@ -1,4 +1,3 @@
-# tracker/poll.py
 from __future__ import annotations
 
 import argparse
@@ -8,6 +7,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import yaml
 
 from tracker.adapters import fetch_source
+from tracker.enhanced_scraper import fetch_enhanced
 from tracker.diff import diff, load_state, save_state
 from tracker.notify import alert_batch
 from tracker.render import render_dashboard
@@ -47,11 +47,14 @@ def _is_relevant_job(job: dict, rules: dict, source: dict) -> bool:
 
 
 def _fetch_one(source_key: str, item: dict) -> tuple[str, str, dict, list[dict] | None, str | None]:
-    """Fetch one source in a worker so slow/blocked sites do not serialize the run."""
+    """Fetch one source, using the enhanced browser fallback when needed."""
     company = str(item.get("name", source_key))
-    adapter = str(item.get("adapter", "career_page"))
     try:
         fetched = fetch_source(item)
+        # A zero-result career page is ambiguous: the site may be JS-rendered,
+        # iframe-based, or expose jobs only through a browser network API.
+        if not fetched and str(item.get("adapter", "career_page")) == "career_page":
+            fetched = fetch_enhanced(str(item.get("url", "")))
         return source_key, company, item, fetched, None
     except Exception as exc:
         return source_key, company, item, None, str(exc)
@@ -72,9 +75,6 @@ def run_poll(tiers: list[str]):
         if tier in tiers:
             selected.append((source_key, item))
 
-    # Fetch sources concurrently. The old implementation fetched every company
-    # serially, so a handful of slow/blocked career pages could consume the
-    # entire GitHub Actions timeout before the later companies were reached.
     max_workers = min(8, max(1, len(selected)))
     print(f"Fetching {len(selected)} sources with {max_workers} concurrent workers...")
 
@@ -88,8 +88,6 @@ def run_poll(tiers: list[str]):
             source_key = futures[future]
             fetched_results[source_key] = future.result()
 
-    # Process in config order so logs remain easy to read and state updates are
-    # still performed serially.
     for source_key, item in selected:
         company = str(item.get("name", source_key))
         adapter = str(item.get("adapter", "career_page"))
