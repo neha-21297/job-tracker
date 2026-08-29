@@ -23,7 +23,7 @@ HEADERS = {
 
 
 def _client() -> httpx.Client:
-    return httpx.Client(headers=HEADERS, timeout=30.0, follow_redirects=True)
+    return httpx.Client(headers=HEADERS, timeout=20.0, follow_redirects=True)
 
 
 def _get(url: str, **kwargs) -> httpx.Response:
@@ -240,9 +240,6 @@ def fetch_workday(
                     offset += len(postings)
             if result:
                 return result
-            # A successful Workday response with zero jobs is still worth
-            # checking through the browser because some tenants expose only
-            # a subset of their jobs to the CXS endpoint.
             break
         except Exception as exc:
             last_error = exc
@@ -395,8 +392,8 @@ def _fetch_ats_from_html(html: str) -> list[dict]:
 def _fetch_with_browser(url: str) -> list[dict]:
     """Render a career page with Chromium and parse the resulting DOM.
 
-    This is a fallback, not the primary adapter: browser startup is much more
-    expensive than calling a public ATS API.
+    Browser fallback is deliberately bounded: one blocked company should not
+    hold up the entire poll run.
     """
     try:
         from playwright.sync_api import sync_playwright
@@ -412,28 +409,26 @@ def _fetch_with_browser(url: str) -> list[dict]:
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         try:
-            for candidate in candidates:
+            for candidate in candidates[:4]:
                 if candidate in seen:
                     continue
                 seen.add(candidate)
+                page = None
                 try:
                     page = browser.new_page(
                         user_agent=HEADERS["User-Agent"],
                         locale="en-GB",
                     )
-                    response = page.goto(candidate, wait_until="domcontentloaded", timeout=30000)
-                    page.wait_for_timeout(1800)
+                    response = page.goto(candidate, wait_until="domcontentloaded", timeout=15000)
+                    page.wait_for_timeout(800)
                     html = page.content()
                     status = response.status if response else 0
                     jobs = _parse_html_jobs(html, candidate)
                     if not jobs:
                         jobs = _fetch_ats_from_html(html)
                     if jobs:
-                        page.close()
                         return jobs
 
-                    # If the supplied URL was stale, use rendered career links
-                    # from the company homepage as second-level candidates.
                     if candidate.endswith("/") and status and status < 400:
                         links = []
                         for href, text in re.findall(
@@ -445,17 +440,17 @@ def _fetch_with_browser(url: str) -> list[dict]:
                             full = urljoin(candidate, unescape(href))
                             if re.search(r"career|vacanc|job|work-with-us|join-us", (label + " " + full).lower()):
                                 links.append(full)
-                        page.close()
-                        for link in links[:5]:
+                        for link in links[:2]:
                             if link not in seen:
                                 candidates.append(link)
-                    else:
-                        page.close()
                 except Exception:
-                    try:
-                        page.close()
-                    except Exception:
-                        pass
+                    pass
+                finally:
+                    if page is not None:
+                        try:
+                            page.close()
+                        except Exception:
+                            pass
         finally:
             browser.close()
     return []
@@ -497,8 +492,6 @@ def fetch_source(item: dict) -> list[dict]:
     if key == "beam":
         return fetch_career_page("https://careers.beam.global/en-GB/jobs")
     if "rovco" in key:
-        # Rovco and Vaarst merged into Beam; keep the existing source entry but
-        # point it at Beam's current careers system rather than the retired URL.
         return fetch_career_page("https://careers.beam.global/en-GB/jobs")
     if "aurora energy research" in key:
         return fetch_career_page("https://auroraer.com/careers/join-us")
@@ -511,8 +504,6 @@ def fetch_source(item: dict) -> list[dict]:
     if key == "shell":
         return fetch_workday("shell.wd3.myworkdayjobs.com", "ShellCareers", item.get("url"), tenant="shell")
     if "viridien" in key:
-        # Viridien's current public board is SmartRecruiters; Workday is kept
-        # as a fallback because older listings still route through it.
         try:
             result = fetch_smartrecruiters("Viridien")
             if result:
